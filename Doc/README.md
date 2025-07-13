@@ -1,6 +1,6 @@
 ![](./thumbnail.png)
 
-# 🤖 `zzzYAIM0425 0300 robots with immunity` [![Bandera de España](https://flagcdn.com/20x15/es.png)](./Doc/README.md)
+# 🤖 `zzzYAIM0425 0300 robots with immunity` [![English Flag](https://flagcdn.com/20x15/gb.png)](../README.md)
 
 Este repositorio contiene el MOD `zzzYAIM0425-0300-robots-with-immunity`, que introduce **robots de construcción y logística** completamente **inmunes a todo tipo de daño** en Factorio.
 
