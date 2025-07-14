@@ -10,14 +10,23 @@ local This_MOD = {}
 
 --- Iniciar el modulo
 function This_MOD.start()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Obtener información desde el nombre de MOD
+    GPrefix.split_name_folder(This_MOD)
+
     --- Valores de la referencia
     This_MOD.setSetting()
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Entidades a afectar
     This_MOD.BuildInfo()
 
     --- Ingredientes a usar
     This_MOD.BuildIngredients()
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Crear los nuevos prototipos
     for _, Type in pairs(This_MOD.Info) do
@@ -27,6 +36,8 @@ function This_MOD.start()
             This_MOD.CreateEntity(Space)
         end
     end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Valores de la referencia
@@ -132,12 +143,6 @@ function This_MOD.getEnergyShield()
     end
     return equipment.name
 end
-
----------------------------------------------------------------------------------------------------
-
-
-
-
 
 ---------------------------------------------------------------------------------------------------
 
