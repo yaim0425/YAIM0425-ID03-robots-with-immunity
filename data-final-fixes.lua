@@ -4,55 +4,55 @@
 
 --- Contenedor de funciones y datos usados
 --- unicamente en este archivo
-local ThisMOD = {}
+local This_MOD = {}
 
 ---------------------------------------------------------------------------------------------------
 
 ---------------------------------------------------------------------------------------------------
 
 --- Iniciar el modulo
-function ThisMOD.Start()
+function This_MOD.Start()
     --- Valores de la referencia
-    ThisMOD.setSetting()
+    This_MOD.setSetting()
 
     --- Entidades a afectar
-    ThisMOD.BuildInfo()
+    This_MOD.BuildInfo()
 
     --- Ingredientes a usar
-    ThisMOD.BuildIngredients()
+    This_MOD.BuildIngredients()
 
     --- Crear los nuevos prototipos
-    for _, Type in pairs(ThisMOD.Info) do
+    for _, Type in pairs(This_MOD.Info) do
         for _, Space in pairs(Type) do
-            ThisMOD.CreateRecipe(Space)
-            ThisMOD.CreateItem(Space)
-            ThisMOD.CreateEntity(Space)
+            This_MOD.CreateRecipe(Space)
+            This_MOD.CreateItem(Space)
+            This_MOD.CreateEntity(Space)
         end
     end
 end
 
 --- Valores de la referencia
-function ThisMOD.setSetting()
+function This_MOD.setSetting()
     --- Otros valores
-    ThisMOD.Prefix         = "zzzYAIM0425-0300-"
-    ThisMOD.name           = "robots-with-immunity"
+    This_MOD.Prefix         = "zzzYAIM0425-0300-"
+    This_MOD.name           = "robots-with-immunity"
 
     --- Indicador
-    ThisMOD.localised_name = { "entity-description." .. ThisMOD.Prefix .. "with-immunity" }
+    This_MOD.localised_name = { "entity-description." .. This_MOD.Prefix .. "with-immunity" }
 
     --- Información de referencia
-    ThisMOD.Info           = {}
-    ThisMOD.Ingredients    = {}
-    ThisMOD.oldItemName    = {}
-    ThisMOD.resistances    = {}
+    This_MOD.Info           = {}
+    This_MOD.Ingredients    = {}
+    This_MOD.oldItemName    = {}
+    This_MOD.resistances    = {}
 
     --- Referencia
-    ThisMOD.Types          = {}
-    table.insert(ThisMOD.Types, "construction-robot")
-    table.insert(ThisMOD.Types, "logistic-robot")
+    This_MOD.Types          = {}
+    table.insert(This_MOD.Types, "construction-robot")
+    table.insert(This_MOD.Types, "logistic-robot")
 
     --- Indicador de mod
-    ThisMOD.Indicator = {
+    This_MOD.Indicator = {
         icon  = data.raw["virtual-signal"]["signal-heart"].icon,
         shift = { 4, -14 },
         scale = 0.15
@@ -64,18 +64,18 @@ end
 ---------------------------------------------------------------------------------------------------
 
 --- Crear ThisMOD.Ingredients
-function ThisMOD.BuildIngredients()
+function This_MOD.BuildIngredients()
     --- Ingredientes a usar
-    ThisMOD.oldItemName = {
-        ThisMOD.getEnergyShield(),
-        ThisMOD.getBattery(),
-        ThisMOD.getSolarPanel()
+    This_MOD.oldItemName = {
+        This_MOD.getEnergyShield(),
+        This_MOD.getBattery(),
+        This_MOD.getSolarPanel()
     }
 
     --- Dar el formaro deseado
-    for _, value in pairs(ThisMOD.oldItemName) do
+    for _, value in pairs(This_MOD.oldItemName) do
         table.insert(
-            ThisMOD.Ingredients,
+            This_MOD.Ingredients,
             {
                 type   = "item",
                 name   = value,
@@ -86,7 +86,7 @@ function ThisMOD.BuildIngredients()
 end
 
 --- Buscar los ingredientes a usar
-function ThisMOD.getBattery()
+function This_MOD.getBattery()
     local equipment = { energy_source = { buffer_capacity = "1j" } }
     local now = GPrefix.getNumber(equipment.energy_source.buffer_capacity)
     for _, Equipment in pairs(GPrefix.Equipments) do
@@ -101,7 +101,7 @@ function ThisMOD.getBattery()
     return equipment.name
 end
 
-function ThisMOD.getSolarPanel()
+function This_MOD.getSolarPanel()
     local equipment = { power = "1j" }
     local now = GPrefix.getNumber(equipment.power)
     for _, Equipment in pairs(GPrefix.Equipments) do
@@ -116,7 +116,7 @@ function ThisMOD.getSolarPanel()
     return equipment.name
 end
 
-function ThisMOD.getEnergyShield()
+function This_MOD.getEnergyShield()
     local equipment = { max_shield_value = 0 }
     local now = equipment.max_shield_value
     for _, Equipment in pairs(GPrefix.Equipments) do
@@ -136,9 +136,9 @@ end
 ---------------------------------------------------------------------------------------------------
 
 --- Información de referencia
-function ThisMOD.BuildInfo()
-    for _, Type in pairs(ThisMOD.Types) do
-        ThisMOD.Info[Type] = ThisMOD.Info[Type] or {}
+function This_MOD.BuildInfo()
+    for _, Type in pairs(This_MOD.Types) do
+        This_MOD.Info[Type] = This_MOD.Info[Type] or {}
         for _, Robot in pairs(data.raw[Type]) do
             --- Validación
             if Robot.hidden then goto JumpRobot end
@@ -147,8 +147,8 @@ function ThisMOD.BuildInfo()
 
             --- Crear el espacio para la entidad
             local item = Robot.minable.results[1].name
-            local Space = ThisMOD.Info[Type][Robot.name] or {}
-            ThisMOD.Info[Type][Robot.name] = Space
+            local Space = This_MOD.Info[Type][Robot.name] or {}
+            This_MOD.Info[Type][Robot.name] = Space
 
             --- Guardar la información
             Space.item = GPrefix.Items[item]
@@ -163,7 +163,7 @@ function ThisMOD.BuildInfo()
     --- Recistencias
     for damage, _ in pairs(data.raw["damage-type"]) do
         table.insert(
-            ThisMOD.resistances,
+            This_MOD.resistances,
             {
                 type = damage,
                 percent = 100
@@ -173,24 +173,24 @@ function ThisMOD.BuildInfo()
 end
 
 --- Crear las recetas
-function ThisMOD.CreateRecipe(space)
+function This_MOD.CreateRecipe(space)
     --- Duplicar la receta
     local recipe   = util.copy(space.recipe)
 
     --- Actualizar propiedades
     recipe.name    = GPrefix.delete_prefix(space.recipe.name)
-    recipe.name    = ThisMOD.Prefix .. recipe.name
+    recipe.name    = This_MOD.Prefix .. recipe.name
 
     recipe.icons   = util.copy(space.item.icons)
     recipe.enabled = false
-    table.insert(recipe.icons, ThisMOD.Indicator)
+    table.insert(recipe.icons, This_MOD.Indicator)
 
     local Order         = tonumber(recipe.order) + 1
     recipe.order        = GPrefix.pad_left(#recipe.order, Order)
 
     recipe.main_product = nil
 
-    recipe.ingredients  = util.copy(ThisMOD.Ingredients)
+    recipe.ingredients  = util.copy(This_MOD.Ingredients)
     table.insert(
         recipe.ingredients,
         {
@@ -202,7 +202,7 @@ function ThisMOD.CreateRecipe(space)
 
     recipe.results = { {
         type   = "item",
-        name   = ThisMOD.Prefix .. GPrefix.delete_prefix(space.item.name),
+        name   = This_MOD.Prefix .. GPrefix.delete_prefix(space.item.name),
         amount = 1
     } }
 
@@ -210,45 +210,45 @@ function ThisMOD.CreateRecipe(space)
     GPrefix.addDataRaw({ recipe })
 
     --- Agregar las recetas en la tecnologia
-    for _, oldItemName in pairs(ThisMOD.oldItemName) do
+    for _, oldItemName in pairs(This_MOD.oldItemName) do
         GPrefix.addRecipeToTechnology(oldItemName, nil, recipe)
         if not recipe.enabled then break end
     end
 end
 
 --- Crear los objetos
-function ThisMOD.CreateItem(space)
+function This_MOD.CreateItem(space)
     --- Crear la entidad
     local item        = util.copy(space.item)
 
-    item.name         = ThisMOD.Prefix .. GPrefix.delete_prefix(space.item.name)
-    item.place_result = ThisMOD.Prefix .. GPrefix.delete_prefix(space.item.place_result)
+    item.name         = This_MOD.Prefix .. GPrefix.delete_prefix(space.item.name)
+    item.place_result = This_MOD.Prefix .. GPrefix.delete_prefix(space.item.place_result)
 
     local Order       = tonumber(item.order) + 1
     item.order        = GPrefix.pad_left(#item.order, Order)
 
     --- Agregar el indicador
-    table.insert(item.icons, ThisMOD.Indicator)
+    table.insert(item.icons, This_MOD.Indicator)
 
     --- Crear el prototipo
     GPrefix.addDataRaw({ item })
 end
 
 --- Crear las entidades
-function ThisMOD.CreateEntity(space)
+function This_MOD.CreateEntity(space)
     --- Crear la entidad
     local robot  = util.copy(space.entity)
     local result = robot.minable.results[1]
 
     --- Actualizar propiedades
-    robot.name   = ThisMOD.Prefix .. GPrefix.delete_prefix(space.entity.name)
-    result.name  = ThisMOD.Prefix .. GPrefix.delete_prefix(result.name)
+    robot.name   = This_MOD.Prefix .. GPrefix.delete_prefix(space.entity.name)
+    result.name  = This_MOD.Prefix .. GPrefix.delete_prefix(result.name)
 
     --- Agregar el indicador
-    table.insert(robot.icons, ThisMOD.Indicator)
+    table.insert(robot.icons, This_MOD.Indicator)
 
     --- Agregar la inmunidad al robot
-    robot.resistances = ThisMOD.resistances
+    robot.resistances = This_MOD.resistances
 
     --- Crear el prototipo
     GPrefix.addDataRaw({ robot })
@@ -259,6 +259,6 @@ end
 ---------------------------------------------------------------------------------------------------
 
 --- Iniciar el modulo
-ThisMOD.Start()
+This_MOD.Start()
 
 ---------------------------------------------------------------------------------------------------
