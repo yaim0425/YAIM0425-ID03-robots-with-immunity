@@ -20,52 +20,52 @@ function This_MOD.start()
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Entidades a afectar
-    This_MOD.BuildInfo()
+    -- --- Entidades a afectar
+    -- This_MOD.BuildInfo()
 
-    --- Ingredientes a usar
-    This_MOD.BuildIngredients()
+    -- --- Ingredientes a usar
+    -- This_MOD.BuildIngredients()
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Crear los nuevos prototipos
-    for _, Type in pairs(This_MOD.Info) do
-        for _, Space in pairs(Type) do
-            This_MOD.CreateRecipe(Space)
-            This_MOD.CreateItem(Space)
-            This_MOD.CreateEntity(Space)
-        end
-    end
+    -- --- Crear los nuevos prototipos
+    -- for _, Type in pairs(This_MOD.info) do
+    --     for _, Space in pairs(Type) do
+    --         This_MOD.CreateRecipe(Space)
+    --         This_MOD.CreateItem(Space)
+    --         This_MOD.CreateEntity(Space)
+    --     end
+    -- end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Valores de la referencia
 function This_MOD.setting_mod()
-    --- Otros valores
-    This_MOD.Prefix         = "zzzYAIM0425-0300-"
-    This_MOD.name           = "robots-with-immunity"
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Indicador
-    This_MOD.localised_name = { "entity-description." .. This_MOD.Prefix .. "with-immunity" }
+    -- --- Indicador
+    -- This_MOD.localised_name = { "entity-description." .. This_MOD.prefix .. "with-immunity" }
 
     --- Información de referencia
-    This_MOD.Info           = {}
-    This_MOD.Ingredients    = {}
-    This_MOD.oldItemName    = {}
-    This_MOD.resistances    = {}
+    This_MOD.info = {}
+    This_MOD.ingredients = {}
+    -- This_MOD.oldItemName = {}
+    This_MOD.resistances = {}
 
     --- Referencia
-    This_MOD.Types          = {}
-    table.insert(This_MOD.Types, "construction-robot")
-    table.insert(This_MOD.Types, "logistic-robot")
+    This_MOD.types = {}
+    table.insert(This_MOD.types, "construction-robot")
+    table.insert(This_MOD.types, "logistic-robot")
 
     --- Indicador de mod
-    This_MOD.Indicator = {
-        icon  = data.raw["virtual-signal"]["signal-heart"].icon,
+    This_MOD.indicator = {
+        icon = data.raw["virtual-signal"]["signal-heart"].icons[1].icon,
         shift = { 4, -14 },
         scale = 0.15
     }
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -88,7 +88,7 @@ function This_MOD.BuildIngredients()
     --- Dar el formaro deseado
     for _, value in pairs(This_MOD.oldItemName) do
         table.insert(
-            This_MOD.Ingredients,
+            This_MOD.ingredients,
             {
                 type   = "item",
                 name   = value,
@@ -148,8 +148,8 @@ end
 
 --- Información de referencia
 function This_MOD.BuildInfo()
-    for _, Type in pairs(This_MOD.Types) do
-        This_MOD.Info[Type] = This_MOD.Info[Type] or {}
+    for _, Type in pairs(This_MOD.types) do
+        This_MOD.info[Type] = This_MOD.info[Type] or {}
         for _, Robot in pairs(data.raw[Type]) do
             --- Validación
             if Robot.hidden then goto JumpRobot end
@@ -158,8 +158,8 @@ function This_MOD.BuildInfo()
 
             --- Crear el espacio para la entidad
             local item = Robot.minable.results[1].name
-            local Space = This_MOD.Info[Type][Robot.name] or {}
-            This_MOD.Info[Type][Robot.name] = Space
+            local Space = This_MOD.info[Type][Robot.name] or {}
+            This_MOD.info[Type][Robot.name] = Space
 
             --- Guardar la información
             Space.item = GPrefix.Items[item]
@@ -190,18 +190,18 @@ function This_MOD.CreateRecipe(space)
 
     --- Actualizar propiedades
     recipe.name    = GPrefix.delete_prefix(space.recipe.name)
-    recipe.name    = This_MOD.Prefix .. recipe.name
+    recipe.name    = This_MOD.prefix .. recipe.name
 
     recipe.icons   = util.copy(space.item.icons)
     recipe.enabled = false
-    table.insert(recipe.icons, This_MOD.Indicator)
+    table.insert(recipe.icons, This_MOD.indicator)
 
     local Order         = tonumber(recipe.order) + 1
     recipe.order        = GPrefix.pad_left(#recipe.order, Order)
 
     recipe.main_product = nil
 
-    recipe.ingredients  = util.copy(This_MOD.Ingredients)
+    recipe.ingredients  = util.copy(This_MOD.ingredients)
     table.insert(
         recipe.ingredients,
         {
@@ -213,7 +213,7 @@ function This_MOD.CreateRecipe(space)
 
     recipe.results = { {
         type   = "item",
-        name   = This_MOD.Prefix .. GPrefix.delete_prefix(space.item.name),
+        name   = This_MOD.prefix .. GPrefix.delete_prefix(space.item.name),
         amount = 1
     } }
 
@@ -232,14 +232,14 @@ function This_MOD.CreateItem(space)
     --- Crear la entidad
     local item        = util.copy(space.item)
 
-    item.name         = This_MOD.Prefix .. GPrefix.delete_prefix(space.item.name)
-    item.place_result = This_MOD.Prefix .. GPrefix.delete_prefix(space.item.place_result)
+    item.name         = This_MOD.prefix .. GPrefix.delete_prefix(space.item.name)
+    item.place_result = This_MOD.prefix .. GPrefix.delete_prefix(space.item.place_result)
 
     local Order       = tonumber(item.order) + 1
     item.order        = GPrefix.pad_left(#item.order, Order)
 
     --- Agregar el indicador
-    table.insert(item.icons, This_MOD.Indicator)
+    table.insert(item.icons, This_MOD.indicator)
 
     --- Crear el prototipo
     GPrefix.addDataRaw({ item })
@@ -252,11 +252,11 @@ function This_MOD.CreateEntity(space)
     local result = robot.minable.results[1]
 
     --- Actualizar propiedades
-    robot.name   = This_MOD.Prefix .. GPrefix.delete_prefix(space.entity.name)
-    result.name  = This_MOD.Prefix .. GPrefix.delete_prefix(result.name)
+    robot.name   = This_MOD.prefix .. GPrefix.delete_prefix(space.entity.name)
+    result.name  = This_MOD.prefix .. GPrefix.delete_prefix(result.name)
 
     --- Agregar el indicador
-    table.insert(robot.icons, This_MOD.Indicator)
+    table.insert(robot.icons, This_MOD.indicator)
 
     --- Agregar la inmunidad al robot
     robot.resistances = This_MOD.resistances
