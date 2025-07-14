@@ -1,45 +1,44 @@
-![](./thumbnail.png)
+![](https://github.com/yaim0425/zzzYAIM0425-0300-robots-with-immunity/raw/main/thumbnail.png)
 
-# 🤖 `zzzYAIM0425 0300 robots with immunity` [![Bandera de España](https://flagcdn.com/20x15/es.png)](./Doc/README.md)
+# 🤖 `zzzYAIM0425 0300 robots with immunity` [![Spanish Flag](https://flagcdn.com/20x15/es.png)](https://github.com/yaim0425/zzzYAIM0425-0300-robots-with-immunity/blob/main/Doc/README.md)
 
-This repository contains the MOD `zzzYAIM0425-0300-robots-with-immunity`, which introduces **construction and logistic robots** that are **completely immune to all damage types** in Factorio.
+This MOD introduces **construction and logistic robots** that are completely **immune to all types of damage** in Factorio.
 
-> 🧩 This MOD is part of the [`zzzYAIM0425` series](https://github.com/yaim0425), designed to offer modular enhancements and utilities for a more refined gameplay experience.
+> 🧩 Part of the [zzzYAIM0425 series](https://github.com/yaim0425), created to provide modular improvements and utilities that enhance gameplay.  
+> 🔧 Depends on [`zzzYAIM0425 0000 lib`](https://github.com/yaim0425/zzzYAIM0425-0000-lib), which is automatically handled by the system.  
+> All its content is available to anyone who needs it; I'm open to changes, corrections, and suggestions.
 
 ## 📦 Purpose
 
-The main goal is to provide **indestructible logistic and construction robots** for creative builds, complex automation setups, testing environments, or custom scenarios.
+To provide **indestructible robots** for creative building, complex automation setups, testing environments, or custom scripted missions.
 
-### Benefits
+### ✅ Benefits
 
-- Full immunity to all damage types  
-- Useful for creative mode, testing, or mission scripting  
-- Seamless integration with existing vanilla robot mechanics  
-- Avoid robot loss in hazardous environments  
+- Total immunity to all types of damage  
+- Perfect for creative mode, testing, or mission scripting  
+- Fully integrated with base game robots  
+- Prevents robot loss in hostile environments  
 
 ## 🗃️ Contents
 
 - Immune variants of:
   - **Construction robots**
   - **Logistic robots**
-- Total immunity to:
-  - Fire
-  - Explosion
-  - Laser
-  - Poison
-  - Physical
-  - Electric
-  - Acid
+- Immune to:
+  - Fire  
+  - Explosions  
+  - Laser  
+  - Poison  
+  - Physical damage  
+  - Electricity  
+  - Acid  
   - And all other registered damage types  
-- Full compatibility with other `zzzYAIM0425` MODs  
-- Can coexist with vanilla robots  
+- Fully compatible with other `zzzYAIM0425` MODs  
+- Can coexist with standard robots  
 
-## 🧭 Requirements
+## 🖼️ Screenshots
 
-- [`zzzYAIM0425 0000 lib`](https://github.com/yaim0425/zzzYAIM0425-0000-lib)  
-  This is a **required dependency** that provides shared logic and utilities.
-
-![](./Doc/base/Screenshot%20(1).png)  
-![](./Doc/base/Screenshot%20(2).png)  
-![](./Doc/base/Screenshot%20(3).png)  
-![](./Doc/base/Screenshot%20(4).png)  
+![](https://github.com/yaim0425/zzzYAIM0425-0300-robots-with-immunity/raw/main/Doc/base/Screenshot%20(1).png)  
+![](https://github.com/yaim0425/zzzYAIM0425-0300-robots-with-immunity/raw/main/Doc/base/Screenshot%20(2).png)  
+![](https://github.com/yaim0425/zzzYAIM0425-0300-robots-with-immunity/raw/main/Doc/base/Screenshot%20(3).png)  
+![](https://github.com/yaim0425/zzzYAIM0425-0300-robots-with-immunity/raw/main/Doc/base/Screenshot%20(4).png)
