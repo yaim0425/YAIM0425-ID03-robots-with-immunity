@@ -20,8 +20,8 @@ function This_MOD.start()
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    -- --- Entidades a afectar
-    -- This_MOD.BuildInfo()
+    --- Entidades a afectar
+    This_MOD.build_info()
 
     -- --- Ingredientes a usar
     -- This_MOD.BuildIngredients()
@@ -147,31 +147,46 @@ end
 ---------------------------------------------------------------------------------------------------
 
 --- Información de referencia
-function This_MOD.BuildInfo()
-    for _, Type in pairs(This_MOD.types) do
-        This_MOD.info[Type] = This_MOD.info[Type] or {}
-        for _, Robot in pairs(data.raw[Type]) do
-            --- Validación
-            if Robot.hidden then goto JumpRobot end
-            if not Robot.minable then goto JumpRobot end
-            if not Robot.minable.results then goto JumpRobot end
+function This_MOD.build_info()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    ---> Cargar las entidades a duplicar
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-            --- Crear el espacio para la entidad
-            local item = Robot.minable.results[1].name
-            local Space = This_MOD.info[Type][Robot.name] or {}
-            This_MOD.info[Type][Robot.name] = Space
+    for _, type in pairs(This_MOD.types) do
+        for _, robot in pairs(data.raw[type]) do
+            repeat
+                --- Validación
+                if robot.hidden then break end
+                if not robot.minable then break end
+                if not robot.minable.results then break end
 
-            --- Guardar la información
-            Space.item = GPrefix.Items[item]
-            Space.entity = Robot
-            Space.recipe = GPrefix.Recipes[item][1]
+                for _, result in pairs(robot.minable.results) do
+                    if result.type == "item" then
+                        --- Crear el espacio para la entidad
+                        This_MOD.info[type] = This_MOD.info[type] or {}
+                        local Space = This_MOD.info[type][robot.name] or {}
+                        This_MOD.info[type][robot.name] = Space
 
-            --- Receptor del salto
-            :: JumpRobot ::
+                        --- Guardar la información
+                        table.insert(Space, {
+                            recipe = GPrefix.Recipes[result.name][1],
+                            item = GPrefix.Items[result.name],
+                            entity = robot
+                        })
+                    end
+                end
+            until true
         end
     end
 
-    --- Recistencias
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    ---> Recistencias
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     for damage, _ in pairs(data.raw["damage-type"]) do
         table.insert(
             This_MOD.resistances,
@@ -181,6 +196,8 @@ function This_MOD.BuildInfo()
             }
         )
     end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Crear las recetas
@@ -275,5 +292,7 @@ end
 
 --- Iniciar el modulo
 This_MOD.start()
+GPrefix.var_dump(This_MOD)
+ERROR()
 
 ---------------------------------------------------------------------------------------------------
