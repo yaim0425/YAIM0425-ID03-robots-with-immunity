@@ -38,11 +38,6 @@ function This_MOD.start()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Creación de las tecnologías
-    This_MOD.create_tecnologies()
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Valores de la referencia
@@ -174,7 +169,7 @@ function This_MOD.build_info()
                             Space.item = Item
                             Space.entity = robot
                             Space.recipe = GPrefix.Recipes[result.name][1]
-                            Space.technology = GPrefix.get_technology(Space.recipe)
+                            Space.tech = GPrefix.get_technology(Space.recipe)
 
                             robot.factoriopedia_simulation = nil
                         end
@@ -244,6 +239,9 @@ function This_MOD.create_recipe(space)
     --- Crear la receta
     GPrefix.extend(Recipe)
 
+    --- Agregar a la tecnología
+    This_MOD.create_tech(space, Recipe)
+
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
@@ -258,7 +256,7 @@ function This_MOD.create_item(space)
     Item.place_result = This_MOD.prefix .. GPrefix.delete_prefix(space.item.place_result)
 
     local Order = tonumber(Item.order) + 1
-    Item.order = GPrefix.pad_left(#Item.order, Order)
+    Item.order = GPrefix.pad_left_zeros(#Item.order, Order)
 
     --- Agregar el indicador
     table.insert(Item.icons, This_MOD.indicator)
@@ -295,12 +293,34 @@ end
 
 ---------------------------------------------------------------------------------------------------
 
-function This_MOD.create_tecnologies()
-    -- --- Agregar las recetas en la tecnologia
-    -- for _, oldItemName in pairs(This_MOD.oldItemName) do
-    --     GPrefix.addRecipeToTechnology(oldItemName, nil, recipe)
-    --     if not recipe.enabled then break end
-    -- end
+--- Crear las tecnologías
+function This_MOD.create_tech(space, new_recipe)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Validación
+    if not space.tech then return end
+
+    --- Nombre de la nueva tecnología
+    local Tech_name = space.tech and space.tech.name
+    Tech_name = GPrefix.delete_prefix(Tech_name)
+    Tech_name = This_MOD.prefix .. Tech_name
+
+    --- La tecnología ya existe
+    if GPrefix.tech.raw[Tech_name] then
+        GPrefix.add_recipe_to_tech(Tech_name, new_recipe)
+        return
+    end
+
+    --- Preprar la nueva tecnología
+    local Tech = util.copy(space.tech)
+    Tech.prerequisites = { Tech.name }
+    Tech.effects = { new_recipe.name }
+    Tech.name = Tech_name
+
+    --- Crear la nueva tecnología
+    GPrefix.extend(Tech)
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 ---------------------------------------------------------------------------------------------------
@@ -313,7 +333,7 @@ end
 
 --- Iniciar el modulo
 This_MOD.start()
-GPrefix.var_dump(This_MOD)
-ERROR()
+-- GPrefix.var_dump(This_MOD)
+-- ERROR()
 
 ---------------------------------------------------------------------------------------------------
