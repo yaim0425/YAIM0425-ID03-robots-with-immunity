@@ -20,8 +20,8 @@ function This_MOD.start()
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    -- --- Ingredientes a usar
-    -- This_MOD.BuildIngredients()
+    --- Ingredientes a usar
+    This_MOD.build_ingredients()
 
     --- Entidades a afectar
     This_MOD.build_info()
@@ -44,13 +44,9 @@ end
 function This_MOD.setting_mod()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    -- --- Indicador
-    -- This_MOD.localised_name = { "entity-description." .. This_MOD.prefix .. "with-immunity" }
-
     --- Información de referencia
     This_MOD.info = {}
     This_MOD.ingredients = {}
-    -- This_MOD.oldItemName = {}
     This_MOD.resistances = {}
 
     --- Referencia
@@ -77,74 +73,74 @@ end
 ---------------------------------------------------------------------------------------------------
 
 --- Crear ThisMOD.Ingredients
-function This_MOD.BuildIngredients()
-    --- Ingredientes a usar
-    This_MOD.oldItemName = {
-        This_MOD.getEnergyShield(),
-        This_MOD.getBattery(),
-        This_MOD.getSolarPanel()
+function This_MOD.build_ingredients()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Lista de ingredientes 
+    local Ingredients = {}
+    Ingredients["battery"] = {
+        amount = 3,
+        eval = function(equipment)
+            if equipment.type ~= "battery-equipment" then return end
+            if not equipment.energy_source then return end
+            if not equipment.energy_source.buffer_capacity then return end
+            return GPrefix.number_unit(equipment.energy_source.buffer_capacity)
+        end
+    }
+    Ingredients["solar-panel"] = {
+        amount = 3,
+        eval = function(equipment)
+            if equipment.type ~= "solar-panel-equipment" then return end
+            if not equipment.power then return end
+            return GPrefix.number_unit(equipment.power)
+        end
+    }
+    Ingredients["energy-shield"] = {
+        amount = 3,
+        eval = function(equipment)
+            if equipment.type ~= "energy-shield-equipment" then return end
+            if not equipment.max_shield_value then return end
+            if equipment.max_shield_value == 0 then return end
+            return equipment.max_shield_value
+        end
     }
 
-    --- Dar el formaro deseado
-    for _, value in pairs(This_MOD.oldItemName) do
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Recorrer los ingredientes
+    for _, ingredient in pairs(Ingredients) do
+        --- Valores de referencia
+        local Now_value = 0
+        local Equipment_name = ""
+
+        --- Buscar el mejor equipo
+        for _, equipment in pairs(GPrefix.Equipments) do
+            repeat
+                local New_value = ingredient.eval(equipment)
+                if not New_value then break end
+                if Now_value < New_value then
+                    Equipment_name = equipment.name
+                    Now_value = New_value
+                end
+            until true
+        end
+
+        --- No se encontró equipo
+        if Now_value == 0 then return end
+
+        --- Agregar el muevo ingrediente
         table.insert(
             This_MOD.ingredients,
             {
-                type   = "item",
-                name   = value,
-                amount = 3
+                type = "item",
+                name = Equipment_name,
+                amount = ingredient.amount
             }
         )
     end
-end
 
---- Buscar los ingredientes a usar
-function This_MOD.getBattery()
-    local equipment = { energy_source = { buffer_capacity = "1j" } }
-    local now = GPrefix.getNumber(equipment.energy_source.buffer_capacity)
-    for _, Equipment in pairs(GPrefix.Equipments) do
-        if Equipment.type == "battery-equipment" then
-            local next = GPrefix.getNumber(Equipment.energy_source.buffer_capacity)
-            if next > now then
-                equipment = Equipment
-                now = next
-            end
-        end
-    end
-    return equipment.name
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
-
-function This_MOD.getSolarPanel()
-    local equipment = { power = "1j" }
-    local now = GPrefix.getNumber(equipment.power)
-    for _, Equipment in pairs(GPrefix.Equipments) do
-        if Equipment.type == "solar-panel-equipment" then
-            local next = GPrefix.getNumber(Equipment.power)
-            if next > now then
-                equipment = Equipment
-                now = next
-            end
-        end
-    end
-    return equipment.name
-end
-
-function This_MOD.getEnergyShield()
-    local equipment = { max_shield_value = 0 }
-    local now = equipment.max_shield_value
-    for _, Equipment in pairs(GPrefix.Equipments) do
-        if Equipment.type == "energy-shield-equipment" then
-            local next = Equipment.max_shield_value
-            if next > now then
-                equipment = Equipment
-                now = next
-            end
-        end
-    end
-    return equipment.name
-end
-
----------------------------------------------------------------------------------------------------
 
 --- Información de referencia
 function This_MOD.build_info()
@@ -203,6 +199,8 @@ function This_MOD.build_info()
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
+
+---------------------------------------------------------------------------------------------------
 
 --- Crear las recetas
 function This_MOD.CreateRecipe(space)
