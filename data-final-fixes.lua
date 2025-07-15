@@ -250,21 +250,26 @@ function This_MOD.create_recipe(space)
 end
 
 --- Crear los objetos
-function This_MOD.CreateItem(space)
+function This_MOD.create_item(space)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- Crear la entidad
-    local item        = util.copy(space.item)
+    local Item = util.copy(space.item)
 
-    item.name         = This_MOD.prefix .. GPrefix.delete_prefix(space.item.name)
-    item.place_result = This_MOD.prefix .. GPrefix.delete_prefix(space.item.place_result)
+    Item.name = This_MOD.prefix .. GPrefix.delete_prefix(space.item.name)
+    Item.place_result = This_MOD.prefix .. GPrefix.delete_prefix(space.item.place_result)
 
-    local Order       = tonumber(item.order) + 1
-    item.order        = GPrefix.pad_left(#item.order, Order)
+    local Order = tonumber(Item.order) + 1
+    Item.order = GPrefix.pad_left(#Item.order, Order)
 
     --- Agregar el indicador
-    table.insert(item.icons, This_MOD.indicator)
+    table.insert(Item.icons, This_MOD.indicator)
 
     --- Crear el prototipo
-    GPrefix.addDataRaw({ item })
+    GPrefix.extend(Item)
+    -- GPrefix.addDataRaw({ item })
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Crear las entidades
