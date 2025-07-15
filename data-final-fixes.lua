@@ -20,11 +20,11 @@ function This_MOD.start()
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Entidades a afectar
-    This_MOD.build_info()
-
     -- --- Ingredientes a usar
     -- This_MOD.BuildIngredients()
+
+    --- Entidades a afectar
+    This_MOD.build_info()
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -162,17 +162,21 @@ function This_MOD.build_info()
 
                 for _, result in pairs(robot.minable.results) do
                     if result.type == "item" then
-                        --- Crear el espacio para la entidad
-                        This_MOD.info[type] = This_MOD.info[type] or {}
-                        local Space = This_MOD.info[type][robot.name] or {}
-                        This_MOD.info[type][robot.name] = Space
+                        local Item = GPrefix.Items[result.name]
+                        if Item.place_result == robot.name then
+                            --- Crear el espacio para la entidad
+                            This_MOD.info[type] = This_MOD.info[type] or {}
+                            local Space = This_MOD.info[type][robot.name] or {}
+                            This_MOD.info[type][robot.name] = Space
 
-                        --- Guardar la información
-                        table.insert(Space, {
-                            recipe = GPrefix.Recipes[result.name][1],
-                            item = GPrefix.Items[result.name],
-                            entity = robot
-                        })
+                            --- Guardar la información
+                            Space.item = Item
+                            Space.entity = robot
+                            Space.recipe = GPrefix.Recipes[result.name][1]
+                            Space.technology = GPrefix.get_technology(Space.recipe)
+
+                            robot.factoriopedia_simulation = nil
+                        end
                     end
                 end
             until true
