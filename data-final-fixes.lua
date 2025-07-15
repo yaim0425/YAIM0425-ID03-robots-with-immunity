@@ -314,8 +314,11 @@ function This_MOD.create_tech(space, new_recipe)
     --- Preprar la nueva tecnología
     local Tech = util.copy(space.tech)
     Tech.prerequisites = { Tech.name }
-    Tech.effects = { new_recipe.name }
     Tech.name = Tech_name
+    Tech.effects = { {
+        type = "unlock-recipe",
+        recipe = new_recipe.name
+    } }
 
     --- Crear la nueva tecnología
     GPrefix.extend(Tech)
@@ -333,7 +336,5 @@ end
 
 --- Iniciar el modulo
 This_MOD.start()
--- GPrefix.var_dump(This_MOD)
--- ERROR()
 
 ---------------------------------------------------------------------------------------------------
