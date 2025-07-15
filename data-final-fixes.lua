@@ -38,6 +38,11 @@ function This_MOD.start()
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Creación de las tecnologías
+    This_MOD.create_tecnologies()
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Valores de la referencia
@@ -238,13 +243,6 @@ function This_MOD.create_recipe(space)
 
     --- Crear la receta
     GPrefix.extend(Recipe)
-    -- GPrefix.addDataRaw({ recipe })
-
-    -- --- Agregar las recetas en la tecnologia
-    -- for _, oldItemName in pairs(This_MOD.oldItemName) do
-    --     GPrefix.addRecipeToTechnology(oldItemName, nil, recipe)
-    --     if not recipe.enabled then break end
-    -- end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -267,7 +265,6 @@ function This_MOD.create_item(space)
 
     --- Crear el prototipo
     GPrefix.extend(Item)
-    -- GPrefix.addDataRaw({ item })
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -294,6 +291,16 @@ function This_MOD.create_entity(space)
     GPrefix.extend(Entity)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+---------------------------------------------------------------------------------------------------
+
+function This_MOD.create_tecnologies()
+    -- --- Agregar las recetas en la tecnologia
+    -- for _, oldItemName in pairs(This_MOD.oldItemName) do
+    --     GPrefix.addRecipeToTechnology(oldItemName, nil, recipe)
+    --     if not recipe.enabled then break end
+    -- end
 end
 
 ---------------------------------------------------------------------------------------------------
