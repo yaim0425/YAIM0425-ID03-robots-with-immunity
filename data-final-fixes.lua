@@ -32,8 +32,8 @@ function This_MOD.start()
     for _, type in pairs(This_MOD.info) do
         for _, space in pairs(type) do
             This_MOD.create_recipe(space)
-            -- This_MOD.CreateItem(Space)
-            -- This_MOD.CreateEntity(Space)
+            This_MOD.create_item(space)
+            This_MOD.create_entity(space)
         end
     end
 
@@ -273,23 +273,27 @@ function This_MOD.create_item(space)
 end
 
 --- Crear las entidades
-function This_MOD.CreateEntity(space)
+function This_MOD.create_entity(space)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- Crear la entidad
-    local robot  = util.copy(space.entity)
-    local result = robot.minable.results[1]
+    local Entity = util.copy(space.entity)
+    local Result = GPrefix.get_table(Entity.minable.results, "name", space.item.name)
 
     --- Actualizar propiedades
-    robot.name   = This_MOD.prefix .. GPrefix.delete_prefix(space.entity.name)
-    result.name  = This_MOD.prefix .. GPrefix.delete_prefix(result.name)
+    Entity.name = This_MOD.prefix .. GPrefix.delete_prefix(space.entity.name)
+    Result.name = This_MOD.prefix .. GPrefix.delete_prefix(Result.name)
 
     --- Agregar el indicador
-    table.insert(robot.icons, This_MOD.indicator)
+    table.insert(Entity.icons, This_MOD.indicator)
 
     --- Agregar la inmunidad al robot
-    robot.resistances = This_MOD.resistances
+    Entity.resistances = This_MOD.resistances
 
     --- Crear el prototipo
-    GPrefix.addDataRaw({ robot })
+    GPrefix.extend(Entity)
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 ---------------------------------------------------------------------------------------------------
