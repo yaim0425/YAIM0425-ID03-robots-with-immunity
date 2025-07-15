@@ -28,14 +28,14 @@ function This_MOD.start()
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    -- --- Crear los nuevos prototipos
-    -- for _, Type in pairs(This_MOD.info) do
-    --     for _, Space in pairs(Type) do
-    --         This_MOD.CreateRecipe(Space)
-    --         This_MOD.CreateItem(Space)
-    --         This_MOD.CreateEntity(Space)
-    --     end
-    -- end
+    --- Crear los nuevos prototipos
+    for _, type in pairs(This_MOD.info) do
+        for _, space in pairs(type) do
+            This_MOD.create_recipe(space)
+            -- This_MOD.CreateItem(Space)
+            -- This_MOD.CreateEntity(Space)
+        end
+    end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -72,11 +72,11 @@ end
 
 ---------------------------------------------------------------------------------------------------
 
---- Crear ThisMOD.Ingredients
+--- Crear This_MOD.ingredients
 function This_MOD.build_ingredients()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Lista de ingredientes 
+    --- Lista de ingredientes
     local Ingredients = {}
     Ingredients["battery"] = {
         amount = 3,
@@ -203,47 +203,50 @@ end
 ---------------------------------------------------------------------------------------------------
 
 --- Crear las recetas
-function This_MOD.CreateRecipe(space)
+function This_MOD.create_recipe(space)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
     --- Duplicar la receta
-    local recipe   = util.copy(space.recipe)
+    local Recipe = util.copy(space.recipe)
+    Recipe.main_product = nil
 
     --- Actualizar propiedades
-    recipe.name    = GPrefix.delete_prefix(space.recipe.name)
-    recipe.name    = This_MOD.prefix .. recipe.name
+    Recipe.name = GPrefix.delete_prefix(space.recipe.name)
+    Recipe.name = This_MOD.prefix .. Recipe.name
 
-    recipe.icons   = util.copy(space.item.icons)
-    recipe.enabled = false
-    table.insert(recipe.icons, This_MOD.indicator)
+    Recipe.icons = util.copy(space.item.icons)
+    table.insert(Recipe.icons, This_MOD.indicator)
 
-    local Order         = tonumber(recipe.order) + 1
-    recipe.order        = GPrefix.pad_left(#recipe.order, Order)
+    local Order = tonumber(Recipe.order) + 1
+    Recipe.order = GPrefix.pad_left_zeros(#Recipe.order, Order)
 
-    recipe.main_product = nil
-
-    recipe.ingredients  = util.copy(This_MOD.ingredients)
+    Recipe.ingredients = util.copy(This_MOD.ingredients)
     table.insert(
-        recipe.ingredients,
+        Recipe.ingredients,
         {
-            type   = "item",
-            name   = space.item.name,
+            type = "item",
+            name = space.item.name,
             amount = 1
         }
     )
 
-    recipe.results = { {
-        type   = "item",
-        name   = This_MOD.prefix .. GPrefix.delete_prefix(space.item.name),
+    Recipe.results = { {
+        type = "item",
+        name = This_MOD.prefix .. GPrefix.delete_prefix(space.item.name),
         amount = 1
     } }
 
-    --- Crear el prototipo
-    GPrefix.addDataRaw({ recipe })
+    --- Crear la receta
+    GPrefix.extend(Recipe)
+    -- GPrefix.addDataRaw({ recipe })
 
-    --- Agregar las recetas en la tecnologia
-    for _, oldItemName in pairs(This_MOD.oldItemName) do
-        GPrefix.addRecipeToTechnology(oldItemName, nil, recipe)
-        if not recipe.enabled then break end
-    end
+    -- --- Agregar las recetas en la tecnologia
+    -- for _, oldItemName in pairs(This_MOD.oldItemName) do
+    --     GPrefix.addRecipeToTechnology(oldItemName, nil, recipe)
+    --     if not recipe.enabled then break end
+    -- end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 --- Crear los objetos
