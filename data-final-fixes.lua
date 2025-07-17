@@ -153,28 +153,19 @@ function This_MOD.build_info()
             repeat
                 --- Validación
                 if robot.hidden then break end
-                if not robot.minable then break end
-                if not robot.minable.results then break end
+                local Item = GPrefix.get_item_create_entity(robot)
+                if not Item then break end
 
-                for _, result in pairs(robot.minable.results) do
-                    if result.type == "item" then
-                        local Item = GPrefix.items[result.name]
-                        if Item.place_result == robot.name then
-                            --- Crear el espacio para la entidad
-                            This_MOD.info[type] = This_MOD.info[type] or {}
-                            local Space = This_MOD.info[type][robot.name] or {}
-                            This_MOD.info[type][robot.name] = Space
+                --- Crear el espacio para la entidad
+                This_MOD.info[type] = This_MOD.info[type] or {}
+                local Space = This_MOD.info[type][robot.name] or {}
+                This_MOD.info[type][robot.name] = Space
 
-                            --- Guardar la información
-                            Space.item = Item
-                            Space.entity = robot
-                            Space.recipe = GPrefix.recipes[result.name][1]
-                            Space.tech = GPrefix.get_technology(Space.recipe)
-
-                            robot.factoriopedia_simulation = nil
-                        end
-                    end
-                end
+                --- Guardar la información
+                Space.item = Item
+                Space.entity = robot
+                Space.recipe = GPrefix.recipes[result.name][1]
+                Space.tech = GPrefix.get_technology(Space.recipe)
             until true
         end
     end
