@@ -114,7 +114,7 @@ function This_MOD.build_ingredients()
         local Equipment_name = ""
 
         --- Buscar el mejor equipo
-        for _, equipment in pairs(GPrefix.Equipments) do
+        for _, equipment in pairs(GPrefix.equipments) do
             repeat
                 local New_value = ingredient.eval(equipment)
                 if not New_value then break end
@@ -158,7 +158,7 @@ function This_MOD.build_info()
 
                 for _, result in pairs(robot.minable.results) do
                     if result.type == "item" then
-                        local Item = GPrefix.Items[result.name]
+                        local Item = GPrefix.items[result.name]
                         if Item.place_result == robot.name then
                             --- Crear el espacio para la entidad
                             This_MOD.info[type] = This_MOD.info[type] or {}
@@ -168,7 +168,7 @@ function This_MOD.build_info()
                             --- Guardar la información
                             Space.item = Item
                             Space.entity = robot
-                            Space.recipe = GPrefix.Recipes[result.name][1]
+                            Space.recipe = GPrefix.recipes[result.name][1]
                             Space.tech = GPrefix.get_technology(Space.recipe)
 
                             robot.factoriopedia_simulation = nil
