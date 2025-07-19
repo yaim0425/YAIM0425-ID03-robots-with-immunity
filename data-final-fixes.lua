@@ -164,7 +164,7 @@ function This_MOD.build_info()
                 --- Guardar la información
                 Space.item = Item
                 Space.entity = robot
-                Space.recipe = GPrefix.recipes[result.name][1]
+                Space.recipe = GPrefix.recipes[Item.name][1]
                 Space.tech = GPrefix.get_technology(Space.recipe)
             until true
         end
