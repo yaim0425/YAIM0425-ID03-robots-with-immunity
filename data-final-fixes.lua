@@ -289,7 +289,7 @@ function This_MOD.create_tech(space, new_recipe)
     if not space.tech then return end
 
     --- Nombre de la nueva tecnología
-    local Tech_name = space.tech and space.tech.name
+    local Tech_name = space.tech and space.tech.name or ""
     Tech_name = GPrefix.delete_prefix(Tech_name)
     Tech_name = This_MOD.prefix .. Tech_name
 
