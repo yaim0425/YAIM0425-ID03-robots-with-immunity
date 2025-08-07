@@ -55,8 +55,9 @@ function This_MOD.setting_mod()
     table.insert(This_MOD.types, "logistic-robot")
 
     --- Indicador de mod
-    local BackColor = data.raw["virtual-signal"]["signal-heart"].icons[1].icon
-    This_MOD.indicator = { icon = BackColor, scale = 0.15, shift = { 0, -12 } }
+    local Indicator = data.raw["virtual-signal"]["signal-heart"].icons[1].icon
+    This_MOD.indicator = { icon = Indicator, scale = 0.15, shift = { 0, -12 } }
+    This_MOD.tech_icon = { icon = Indicator, scale = 0.50, shift = { 0, -50 } }
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -228,7 +229,8 @@ function This_MOD.create_recipe(space)
     GPrefix.extend(Recipe)
 
     --- Agregar a la tecnología
-    GPrefix.create_tech(This_MOD.prefix, space.tech, Recipe)
+    local Tech = GPrefix.create_tech(This_MOD.prefix, space.tech, Recipe)
+    table.insert(Tech.icons, This_MOD.tech_icon)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
