@@ -228,7 +228,7 @@ function This_MOD.create_recipe(space)
     GPrefix.extend(Recipe)
 
     --- Agregar a la tecnología
-    This_MOD.create_tech(space, Recipe)
+    GPrefix.create_tech(This_MOD.prefix, space.tech, Recipe)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -275,41 +275,6 @@ function This_MOD.create_entity(space)
 
     --- Crear el prototipo
     GPrefix.extend(Entity)
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
----------------------------------------------------------------------------------------------------
-
---- Crear las tecnologías
-function This_MOD.create_tech(space, new_recipe)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Validación
-    if not space.tech then return end
-
-    --- Nombre de la nueva tecnología
-    local Tech_name = space.tech and space.tech.name or ""
-    Tech_name = GPrefix.delete_prefix(Tech_name)
-    Tech_name = This_MOD.prefix .. Tech_name
-
-    --- La tecnología ya existe
-    if GPrefix.tech.raw[Tech_name] then
-        GPrefix.add_recipe_to_tech(Tech_name, new_recipe)
-        return
-    end
-
-    --- Preprar la nueva tecnología
-    local Tech = util.copy(space.tech)
-    Tech.prerequisites = { Tech.name }
-    Tech.name = Tech_name
-    Tech.effects = { {
-        type = "unlock-recipe",
-        recipe = new_recipe.name
-    } }
-
-    --- Crear la nueva tecnología
-    GPrefix.extend(Tech)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
