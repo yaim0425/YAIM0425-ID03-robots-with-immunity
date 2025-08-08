@@ -230,7 +230,7 @@ function This_MOD.create_recipe(space)
 
     --- Agregar a la tecnología
     local Tech = GPrefix.create_tech(This_MOD.prefix, space.tech, Recipe)
-    table.insert(Tech.icons, This_MOD.tech_icon)
+    if Tech then table.insert(Tech.icons, This_MOD.tech_icon) end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
