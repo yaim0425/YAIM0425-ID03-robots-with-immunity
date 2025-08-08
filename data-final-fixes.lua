@@ -56,8 +56,12 @@ function This_MOD.setting_mod()
 
     --- Indicador de mod
     local Indicator = data.raw["virtual-signal"]["signal-heart"].icons[1].icon
-    This_MOD.indicator = { icon = Indicator, scale = 0.15, shift = { 0, -12 } }
-    This_MOD.tech_icon = { icon = Indicator, scale = 0.50, shift = { 0, -50 } }
+
+    This_MOD.icon = {}
+    This_MOD.icon.tech = { icon = Indicator, scale = 0.50, shift = { 0, -50 } }
+    This_MOD.icon.tech_bg = { icon = GPrefix.color.black, scale = 0.50, shift = { 0, -50 } }
+    This_MOD.icon.other = { icon = Indicator, scale = 0.15, shift = { 0, -12 } }
+    This_MOD.icon.other_bg = { icon = GPrefix.color.black, scale = 0.15, shift = { 0, -12 } }
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -204,7 +208,8 @@ function This_MOD.create_recipe(space)
     Recipe.name = This_MOD.prefix .. Recipe.name
 
     Recipe.icons = util.copy(space.item.icons)
-    table.insert(Recipe.icons, This_MOD.indicator)
+    table.insert(Recipe.icons, This_MOD.icon.other_bg)
+    table.insert(Recipe.icons, This_MOD.icon.other)
 
     local Order = tonumber(Recipe.order) + 1
     Recipe.order = GPrefix.pad_left_zeros(#Recipe.order, Order)
@@ -230,7 +235,10 @@ function This_MOD.create_recipe(space)
 
     --- Agregar a la tecnología
     local Tech = GPrefix.create_tech(This_MOD.prefix, space.tech, Recipe)
-    if Tech then table.insert(Tech.icons, This_MOD.tech_icon) end
+    if Tech then
+        table.insert(Tech.icons, This_MOD.icon.tech_bg)
+        table.insert(Tech.icons, This_MOD.icon.tech)
+    end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -249,7 +257,8 @@ function This_MOD.create_item(space)
     Item.order = GPrefix.pad_left_zeros(#Item.order, Order)
 
     --- Agregar el indicador
-    table.insert(Item.icons, This_MOD.indicator)
+    table.insert(Item.icons, This_MOD.icon.other_bg)
+    table.insert(Item.icons, This_MOD.icon.other)
 
     --- Crear el prototipo
     GPrefix.extend(Item)
@@ -270,7 +279,8 @@ function This_MOD.create_entity(space)
     Result.name = This_MOD.prefix .. GPrefix.delete_prefix(Result.name)
 
     --- Agregar el indicador
-    table.insert(Entity.icons, This_MOD.indicator)
+    table.insert(Entity.icons, This_MOD.icon.other_bg)
+    table.insert(Entity.icons, This_MOD.icon.other)
 
     --- Agregar la inmunidad al robot
     Entity.resistances = This_MOD.resistances
