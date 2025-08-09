@@ -55,8 +55,13 @@ function This_MOD.setting_mod()
     table.insert(This_MOD.types, "logistic-robot")
 
     --- Indicador de mod
-    local BackColor = data.raw["virtual-signal"]["signal-heart"].icons[1].icon
-    This_MOD.indicator = { icon = BackColor, scale = 0.15, shift = { 4, -14 } }
+    local Indicator = data.raw["virtual-signal"]["signal-heart"].icons[1].icon
+
+    This_MOD.icon = {}
+    This_MOD.icon.tech = { icon = Indicator, scale = 0.50, shift = { 0, -50 } }
+    This_MOD.icon.tech_bg = { icon = GPrefix.color.black, scale = 0.50, shift = { 0, -50 } }
+    This_MOD.icon.other = { icon = Indicator, scale = 0.15, shift = { 0, -12 } }
+    This_MOD.icon.other_bg = { icon = GPrefix.color.black, scale = 0.15, shift = { 0, -12 } }
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -203,7 +208,8 @@ function This_MOD.create_recipe(space)
     Recipe.name = This_MOD.prefix .. Recipe.name
 
     Recipe.icons = util.copy(space.item.icons)
-    table.insert(Recipe.icons, This_MOD.indicator)
+    table.insert(Recipe.icons, This_MOD.icon.other_bg)
+    table.insert(Recipe.icons, This_MOD.icon.other)
 
     local Order = tonumber(Recipe.order) + 1
     Recipe.order = GPrefix.pad_left_zeros(#Recipe.order, Order)
@@ -228,7 +234,11 @@ function This_MOD.create_recipe(space)
     GPrefix.extend(Recipe)
 
     --- Agregar a la tecnología
-    This_MOD.create_tech(space, Recipe)
+    local Tech = GPrefix.create_tech(This_MOD.prefix, space.tech, Recipe)
+    if Tech then
+        table.insert(Tech.icons, This_MOD.icon.tech_bg)
+        table.insert(Tech.icons, This_MOD.icon.tech)
+    end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -247,7 +257,8 @@ function This_MOD.create_item(space)
     Item.order = GPrefix.pad_left_zeros(#Item.order, Order)
 
     --- Agregar el indicador
-    table.insert(Item.icons, This_MOD.indicator)
+    table.insert(Item.icons, This_MOD.icon.other_bg)
+    table.insert(Item.icons, This_MOD.icon.other)
 
     --- Crear el prototipo
     GPrefix.extend(Item)
@@ -268,48 +279,14 @@ function This_MOD.create_entity(space)
     Result.name = This_MOD.prefix .. GPrefix.delete_prefix(Result.name)
 
     --- Agregar el indicador
-    table.insert(Entity.icons, This_MOD.indicator)
+    table.insert(Entity.icons, This_MOD.icon.other_bg)
+    table.insert(Entity.icons, This_MOD.icon.other)
 
     --- Agregar la inmunidad al robot
     Entity.resistances = This_MOD.resistances
 
     --- Crear el prototipo
     GPrefix.extend(Entity)
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
----------------------------------------------------------------------------------------------------
-
---- Crear las tecnologías
-function This_MOD.create_tech(space, new_recipe)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Validación
-    if not space.tech then return end
-
-    --- Nombre de la nueva tecnología
-    local Tech_name = space.tech and space.tech.name or ""
-    Tech_name = GPrefix.delete_prefix(Tech_name)
-    Tech_name = This_MOD.prefix .. Tech_name
-
-    --- La tecnología ya existe
-    if GPrefix.tech.raw[Tech_name] then
-        GPrefix.add_recipe_to_tech(Tech_name, new_recipe)
-        return
-    end
-
-    --- Preprar la nueva tecnología
-    local Tech = util.copy(space.tech)
-    Tech.prerequisites = { Tech.name }
-    Tech.name = Tech_name
-    Tech.effects = { {
-        type = "unlock-recipe",
-        recipe = new_recipe.name
-    } }
-
-    --- Crear la nueva tecnología
-    GPrefix.extend(Tech)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
