@@ -124,6 +124,7 @@ function This_MOD.create_recipe(space)
     Recipe.name = This_MOD.prefix .. Recipe.name
 
     Recipe.main_product = nil
+    Recipe.energy_required = 15 * 60
 
     Recipe.icons = util.copy(space.item.icons)
     table.insert(Recipe.icons, This_MOD.icon.other_bg)
@@ -144,8 +145,10 @@ function This_MOD.create_recipe(space)
         amount = 1
     } }
 
-    --- Agregar a la tecnología
+    --- Agregar la receta a la tecnología
     local Tech = GPrefix.create_tech(This_MOD.prefix, space.tech, Recipe)
+
+    --- Agregar indicadores a la tecnología
     if Tech then
         table.insert(Tech.icons, This_MOD.icon.tech_bg)
         table.insert(Tech.icons, This_MOD.icon.tech)
