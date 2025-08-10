@@ -42,12 +42,11 @@ function This_MOD.setting_mod()
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Información de referencia
-    This_MOD.info = { resistances = {} }
-
-    --- Referencia
+    This_MOD.info = {}
     This_MOD.types = { "construction-robot", "logistic-robot" }
+    This_MOD.resistances = {}
 
-    --- Indicador de mod
+    --- Indicadores del MOD
     local Indicator = data.raw["virtual-signal"]["signal-heart"].icons[1].icon
 
     This_MOD.icon = {
