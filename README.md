@@ -43,3 +43,4 @@ To provide **indestructible robots** for creative building, complex automation s
 ![](https://github.com/yaim0425/zzzYAIM0425-0300-robots-with-immunity/raw/main/Doc/base/(3).png)  
 ![](https://github.com/yaim0425/zzzYAIM0425-0300-robots-with-immunity/raw/main/Doc/base/(4).png)
 ![](https://github.com/yaim0425/zzzYAIM0425-0300-robots-with-immunity/raw/main/Doc/base/(5).png)
+![](https://github.com/yaim0425/zzzYAIM0425-0300-robots-with-immunity/raw/main/Doc/base/(6).png)
