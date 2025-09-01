@@ -117,7 +117,7 @@ function This_MOD.create_recipe(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Duplicar la receta
-    local Recipe = util.copy(space.recipe)
+    local Recipe = GPrefix.copy(space.recipe)
 
     --- Actualizar propiedades
     Recipe.name = GPrefix.delete_prefix(space.recipe.name)
@@ -126,7 +126,7 @@ function This_MOD.create_recipe(space)
     Recipe.main_product = nil
     Recipe.energy_required = 15 * 60
 
-    Recipe.icons = util.copy(space.item.icons)
+    Recipe.icons = GPrefix.copy(space.item.icons)
     table.insert(Recipe.icons, This_MOD.icon.other_bg)
     table.insert(Recipe.icons, This_MOD.icon.other)
 
@@ -162,7 +162,7 @@ function This_MOD.create_item(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Crear la entidad
-    local Item = util.copy(space.item)
+    local Item = GPrefix.copy(space.item)
 
     Item.name = This_MOD.prefix .. GPrefix.delete_prefix(space.item.name)
     Item.place_result = This_MOD.prefix .. GPrefix.delete_prefix(space.item.place_result)
@@ -185,7 +185,7 @@ function This_MOD.create_entity(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     --- Crear la entidad
-    local Entity = util.copy(space.entity)
+    local Entity = GPrefix.copy(space.entity)
     local Result = GPrefix.get_table(Entity.minable.results, "name", space.item.name)
 
     --- Actualizar propiedades
