@@ -101,11 +101,11 @@ function This_MOD.setting_mod()
     --- Valores de la referencia en este MOD
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Tiempo de creación de las recetas
-    This_MOD.time = This_MOD.setting.time
-    --- Min. 1 (1s)
-    --- Max. 65000 (18h)
-    --- Def. 900 (15m)
+    --- Daños a procesar
+    This_MOD.damages = {}
+    for damage, _ in pairs(data.raw["damage-type"]) do
+        table.insert(This_MOD.damages, damage)
+    end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -340,7 +340,7 @@ function This_MOD.create_recipe(space)
     --- Crear las recetas
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    for damage, _ in pairs(data.raw["damage-type"]) do
+    for _, damage in pairs(This_MOD.damages) do
         one_resistance(damage)
         all_resistance(damage)
     end
