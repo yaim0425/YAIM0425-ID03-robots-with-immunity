@@ -153,6 +153,7 @@ function This_MOD.get_elements()
 
         --- Validar el tipo
         if not element then return end
+        if type(element) ~= "string" then return end
         if element.type ~= "armor" then return end
 
         --- Validar si ya fue procesado
