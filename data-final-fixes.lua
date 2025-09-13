@@ -232,12 +232,14 @@ function This_MOD.create_recipe(space)
 
         Recipe.localised_name = GMOD.copy(space.item.localised_name)
         table.insert(Recipe.localised_name, " - ")
-        table.insert(Recipe.localised_name, { "damage-type-name." .. damage })
+        table.insert(Recipe.localised_name, { "damage-type-name." .. damage_type })
 
         Recipe.icons = GMOD.copy(space.item.icons)
         table.insert(Recipe.icons, This_MOD.indicator)
 
         Recipe.subgroup = This_MOD.prefix .. This_MOD.name
+
+        Recipe.order = GMOD.pad_left_zeros(#This_MOD.damages, GMOD.get_key(damage_type)) .. "0"
 
         Recipe.energy_required = This_MOD.setting.time
 
@@ -280,6 +282,29 @@ function This_MOD.create_recipe(space)
 
     local function all_resistance(damage_type)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Validar si se creó la receta "all"
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        if GMOD.recipes[This_MOD.prefix .. "all"] then
+            --- Agregar el ingrediente a la receta existente
+            table.insert(
+                GMOD.recipes[This_MOD.prefix .. "all"].ingredients,
+                {
+                    type = "item",
+                    name = This_MOD.prefix .. damage_type,
+                    amount = 1
+                }
+            )
+            return
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         --- Duplicar el elemento
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -295,25 +320,34 @@ function This_MOD.create_recipe(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        -- --- Nueva receta
-        -- local Count = GPrefix.get_length(This_MOD.damages) + 1
+        Recipe.name = This_MOD.prefix .. "all"
 
-        -- --- Actualizar los valores
-        -- Recipe.results[1].name = Recipe.name .. "all"
-        -- Recipe.name = Recipe.name .. "all"
-        -- Recipe.order = GPrefix.pad_left_zeros(This_MOD.digit, Count) .. "0"
-        -- table.insert(Recipe.localised_name, { "gui.all" })
-        -- table.insert(Recipe.icons, This_MOD.icon.other)
+        Recipe.localised_description = { "" }
 
-        -- --- Agregar los ingredientes
-        -- Recipe.ingredients = {}
-        -- for damage, _ in pairs(This_MOD.damages) do
-        --     table.insert(Recipe.ingredients, {
-        --         type = "item",
-        --         name = This_MOD.recipe.name .. damage,
-        --         amount = 1
-        --     })
-        -- end
+        Recipe.localised_name = GMOD.copy(space.item.localised_name)
+        table.insert(Recipe.localised_name, " - ")
+        table.insert(Recipe.localised_name, { "gui.all" })
+
+        Recipe.icons = GMOD.copy(space.item.icons)
+        table.insert(Recipe.icons, This_MOD.indicator)
+
+        Recipe.subgroup = This_MOD.prefix .. This_MOD.name
+
+        Recipe.order = GMOD.pad_left_zeros(#This_MOD.damages, #This_MOD.damages) .. "0"
+
+        Recipe.energy_required = This_MOD.setting.time
+
+        Recipe.results = { {
+            type = "item",
+            name = Recipe.name,
+            amount = 1
+        } }
+
+        Recipe.ingredients = { {
+            type = "item",
+            name = This_MOD.prefix .. damage_type,
+            amount = 1
+        } }
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
