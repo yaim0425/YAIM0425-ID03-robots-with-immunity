@@ -214,7 +214,7 @@ function This_MOD.create_recipe(space)
         --- Duplicar el elemento
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        local Recipe = GMOD.copy(This_MOD.recipe)
+        local Recipe = GMOD.copy(space.recipe)
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
