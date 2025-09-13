@@ -268,35 +268,67 @@ function This_MOD.create_recipe(space)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     end
 
-    -- local function all_resistance()
-    --     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --     --- Nueva receta
-    --     local Recipe = GPrefix.copy(This_MOD.recipe)
-    --     local Count = GPrefix.get_length(This_MOD.damages) + 1
 
-    --     --- Actualizar los valores
-    --     Recipe.results[1].name = Recipe.name .. "all"
-    --     Recipe.name = Recipe.name .. "all"
-    --     Recipe.order = GPrefix.pad_left_zeros(This_MOD.digit, Count) .. "0"
-    --     table.insert(Recipe.localised_name, { "gui.all" })
-    --     table.insert(Recipe.icons, This_MOD.icon.other)
 
-    --     --- Agregar los ingredientes
-    --     Recipe.ingredients = {}
-    --     for damage, _ in pairs(This_MOD.damages) do
-    --         table.insert(Recipe.ingredients, {
-    --             type = "item",
-    --             name = This_MOD.recipe.name .. damage,
-    --             amount = 1
-    --         })
-    --     end
 
-    --     --- Agregar la receta
-    --     GPrefix.extend(Recipe)
 
-    --     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    -- end
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear la receta para todos los tipos de daño
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function all_resistance(damage_type)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Duplicar el elemento
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Recipe = GMOD.copy(space.recipe)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Cambiar algunas propiedades
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        -- --- Nueva receta
+        -- local Count = GPrefix.get_length(This_MOD.damages) + 1
+
+        -- --- Actualizar los valores
+        -- Recipe.results[1].name = Recipe.name .. "all"
+        -- Recipe.name = Recipe.name .. "all"
+        -- Recipe.order = GPrefix.pad_left_zeros(This_MOD.digit, Count) .. "0"
+        -- table.insert(Recipe.localised_name, { "gui.all" })
+        -- table.insert(Recipe.icons, This_MOD.icon.other)
+
+        -- --- Agregar los ingredientes
+        -- Recipe.ingredients = {}
+        -- for damage, _ in pairs(This_MOD.damages) do
+        --     table.insert(Recipe.ingredients, {
+        --         type = "item",
+        --         name = This_MOD.recipe.name .. damage,
+        --         amount = 1
+        --     })
+        -- end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Crear el prototipo
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        GMOD.extend(Recipe)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -310,6 +342,7 @@ function This_MOD.create_recipe(space)
 
     for damage, _ in pairs(data.raw["damage-type"]) do
         one_resistance(damage)
+        all_resistance(damage)
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
