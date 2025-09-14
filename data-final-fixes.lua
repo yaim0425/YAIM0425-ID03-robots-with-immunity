@@ -231,7 +231,7 @@ function This_MOD.create_recipe(space)
     --- Crear la receta para cada tipo de daño
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    local function one(damage_type)
+    local function one(damage)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         --- Duplicar el elemento
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -248,20 +248,20 @@ function This_MOD.create_recipe(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        Recipe.name = This_MOD.prefix .. damage_type
+        Recipe.name = This_MOD.prefix .. damage
 
         Recipe.localised_description = { "" }
 
         Recipe.localised_name = GMOD.copy(space.item.localised_name)
         table.insert(Recipe.localised_name, " - ")
-        table.insert(Recipe.localised_name, { "damage-type-name." .. damage_type })
+        table.insert(Recipe.localised_name, { "damage-type-name." .. damage })
 
         Recipe.icons = GMOD.copy(space.item.icons)
         table.insert(Recipe.icons, This_MOD.indicator)
 
         Recipe.subgroup = This_MOD.prefix .. space.item.name
 
-        Recipe.order = GMOD.pad_left_zeros(#This_MOD.damages, GMOD.get_key(damage_type)) .. "0"
+        Recipe.order = GMOD.pad_left_zeros(#This_MOD.damages, GMOD.get_key(damage)) .. "0"
 
         Recipe.energy_required = This_MOD.setting.time
 
@@ -302,7 +302,7 @@ function This_MOD.create_recipe(space)
     --- Crear la receta para todos los tipos de daño
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    local function all(damage_type)
+    local function all(damage)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         --- Validar si se creó la receta "all"
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -313,7 +313,7 @@ function This_MOD.create_recipe(space)
                 GMOD.recipes[This_MOD.prefix .. "all"].ingredients,
                 {
                     type = "item",
-                    name = This_MOD.prefix .. damage_type,
+                    name = This_MOD.prefix .. damage,
                     amount = 1
                 }
             )
@@ -367,7 +367,7 @@ function This_MOD.create_recipe(space)
 
         Recipe.ingredients = { {
             type = "item",
-            name = This_MOD.prefix .. damage_type,
+            name = This_MOD.prefix .. damage,
             amount = 1
         } }
 
