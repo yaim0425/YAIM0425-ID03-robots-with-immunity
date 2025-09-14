@@ -259,7 +259,7 @@ function This_MOD.create_recipe(space)
         Recipe.icons = GMOD.copy(space.item.icons)
         table.insert(Recipe.icons, This_MOD.indicator)
 
-        Recipe.subgroup = This_MOD.prefix .. This_MOD.name
+        Recipe.subgroup = This_MOD.prefix .. space.item.name
 
         Recipe.order = GMOD.pad_left_zeros(#This_MOD.damages, GMOD.get_key(damage_type)) .. "0"
 
@@ -353,7 +353,7 @@ function This_MOD.create_recipe(space)
         Recipe.icons = GMOD.copy(space.item.icons)
         table.insert(Recipe.icons, This_MOD.indicator)
 
-        Recipe.subgroup = This_MOD.prefix .. This_MOD.name
+        Recipe.subgroup = This_MOD.prefix .. space.item.name
 
         Recipe.order = GMOD.pad_left_zeros(#This_MOD.damages, #This_MOD.damages) .. "0"
 
@@ -412,6 +412,8 @@ function This_MOD.create_subgroup(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     if not space.item then return end
+    local New = This_MOD.prefix .. space.item.name
+    if not GMOD.subgroups[New] then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -424,7 +426,6 @@ function This_MOD.create_subgroup(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     local Old = space.item.subgroup
-    local New = This_MOD.prefix .. This_MOD.name
     GMOD.duplicate_subgroup(Old, New)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
