@@ -231,7 +231,7 @@ function This_MOD.create_recipe(space)
     --- Crear la receta para cada tipo de daño
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    local function one_resistance(damage_type)
+    local function one(damage_type)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         --- Duplicar el elemento
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -302,7 +302,7 @@ function This_MOD.create_recipe(space)
     --- Crear la receta para todos los tipos de daño
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    local function all_resistance(damage_type)
+    local function all(damage_type)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         --- Validar si se creó la receta "all"
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -397,8 +397,8 @@ function This_MOD.create_recipe(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     for _, damage in pairs(This_MOD.damages) do
-        one_resistance(damage)
-        all_resistance(damage)
+        one(damage)
+        all(damage)
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
