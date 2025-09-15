@@ -230,7 +230,7 @@ function This_MOD.create_recipe(space)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear la receta para cada tipo de daño
+    --- Crear para cada tipo de daño
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     local function one(i, damage)
@@ -303,12 +303,12 @@ function This_MOD.create_recipe(space)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear la receta para todos los tipos de daño
+    --- Crear para todos los tipos de daño
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     local function all(damage)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Validar si se creó la receta "all"
+        --- Validar si se creó "all"
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
         if data.raw.recipe[This_MOD.prefix .. "all"] then
@@ -399,7 +399,7 @@ function This_MOD.create_recipe(space)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear las recetas
+    --- Recorrer los daños
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     for key, damage in pairs(This_MOD.damages) do
@@ -424,7 +424,7 @@ function This_MOD.create_item(space)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear el item para cada tipo de daño
+    --- Crear para cada tipo de daño
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     local function one(i, damage)
@@ -495,12 +495,12 @@ function This_MOD.create_item(space)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear el item para todos los tipos de daño
+    --- Crear para todos los tipos de daño
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     local function all(damage)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Validar si se creó el item "all"
+        --- Validar si se creó "all"
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
         if GMOD.items[This_MOD.prefix .. "all"] then
@@ -589,7 +589,7 @@ function This_MOD.create_item(space)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear los objetos
+    --- Recorrer los daños
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     for key, damage in pairs(This_MOD.damages) do
@@ -614,7 +614,7 @@ function This_MOD.create_tech(space)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear la tech para cada tipo de daño
+    --- Crear para cada tipo de daño
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     local function one(damage)
@@ -683,7 +683,7 @@ function This_MOD.create_tech(space)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear la tech para todos los tipos de daño
+    --- Crear para todos los tipos de daño
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     local function all(damage)
@@ -772,7 +772,7 @@ function This_MOD.create_tech(space)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear los tech
+    --- Recorrer los daños
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     for _, damage in pairs(This_MOD.damages) do
