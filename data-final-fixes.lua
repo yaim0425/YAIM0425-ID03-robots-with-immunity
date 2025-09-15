@@ -46,7 +46,7 @@ function This_MOD.start()
 
             --- Crear los elementos
             This_MOD.create_recipe(space)
-            -- This_MOD.create_item(space)
+            This_MOD.create_item(space)
             -- This_MOD.create_tech(space)
             This_MOD.create_subgroup(space)
 
@@ -153,7 +153,6 @@ function This_MOD.get_elements()
 
         --- Validar el tipo
         if not element then return end
-        if type(element) ~= "string" then return end
         if element.type ~= "armor" then return end
 
         --- Validar si ya fue procesado
@@ -307,10 +306,10 @@ function This_MOD.create_recipe(space)
         --- Validar si se creó la receta "all"
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        if GMOD.recipes[This_MOD.prefix .. "all"] then
+        if data.raw.recipe[This_MOD.prefix .. "all"] then
             --- Agregar el ingrediente a la receta existente
             table.insert(
-                GMOD.recipes[This_MOD.prefix .. "all"].ingredients,
+                data.raw.recipe[This_MOD.prefix .. "all"].ingredients,
                 {
                     type = "item",
                     name = This_MOD.prefix .. damage,
