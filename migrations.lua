@@ -3,12 +3,11 @@
 ---------------------------------------------------------------------------------------------------
 
 --- Actualizar las recetas habilitadas
-for _, Force in pairs( game.forces ) do
-    for _, Technology in pairs( Force.technologies ) do
-        for _, Effect in pairs( Technology.prototype.effects ) do
-            if Effect.type == "unlock-recipe" then
-                local Recipes = Force.recipes[ Effect.recipe ]
-                Recipes.enabled = Technology.researched
+for _, force in pairs(game.forces) do
+    for _, technology in pairs(force.technologies) do
+        for _, effect in pairs(technology.prototype.effects) do
+            if effect.type == "unlock-recipe" then
+                force.recipes[effect.recipe].enabled = technology.researched or false
             end
         end
     end
