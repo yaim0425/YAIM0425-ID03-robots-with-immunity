@@ -45,8 +45,8 @@ table.insert(This_MOD.setting, {
     name = "time",
     localised_name = { "description.crafting-time" },
     localised_description =
-        "Min. 1 [ 1seg ] \n" ..
-        "Max. 65k [ 18h ] \n" ..
+        "Min. 1 [ 1seg ]\n" ..
+        "Max. 65k [ 18h ]\n" ..
         "Def. 900 [ 15min ]\n" ..
         "\n" ..
         "15min * 60seg = 900seg",
