@@ -586,7 +586,7 @@ function This_MOD.create_subgroup(space)
 
     if not space.item then return end
     local New = This_MOD.prefix .. space.item.name
-    if not GMOD.subgroups[New] then return end
+    if GMOD.subgroups[New] then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
