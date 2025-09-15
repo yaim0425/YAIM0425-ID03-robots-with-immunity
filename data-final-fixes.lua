@@ -519,7 +519,7 @@ function This_MOD.create_item(space)
         --- Duplicar el elemento
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        local Item = GMOD.copy(space.recipe)
+        local Item = GMOD.copy(space.item)
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
