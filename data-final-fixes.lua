@@ -458,6 +458,14 @@ function This_MOD.create_item(space)
             percent = 100
         } }
 
+        Item.factoriopedia_simulation = {
+            init =
+                'game.simulation.camera_zoom = 4' ..
+                'game.simulation.camera_position = {0.5, -0.25}' ..
+                'local character = game.surfaces[1].create_entity{name = "character", position = {0.5, 0.5}, force = "player", direction = defines.direction.south}' ..
+                'character.insert{name = "' .. Item.name .. '"}'
+        }
+
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
@@ -543,6 +551,14 @@ function This_MOD.create_item(space)
             decrease = 0,
             percent = 100
         } }
+
+        Item.factoriopedia_simulation = {
+            init =
+                'game.simulation.camera_zoom = 4' ..
+                'game.simulation.camera_position = {0.5, -0.25}' ..
+                'local character = game.surfaces[1].create_entity{name = "character", position = {0.5, 0.5}, force = "player", direction = defines.direction.south}' ..
+                'character.insert{name = "' .. Item.name .. '"}'
+        }
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
