@@ -219,7 +219,7 @@ function This_MOD.create_recipe(space)
     --- Validación
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    if not space.item then return end
+    if not space.recipe then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
