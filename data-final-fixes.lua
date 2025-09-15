@@ -128,6 +128,9 @@ function This_MOD.setting_mod()
         table.insert(This_MOD.damages, damage)
     end
 
+    ---Digitos necesarios para ordenar
+    This_MOD.damages_count = GMOD.digit_count(#This_MOD.damages)
+
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
@@ -260,7 +263,7 @@ function This_MOD.create_recipe(space)
 
         Recipe.subgroup = This_MOD.prefix .. space.item.name
 
-        Recipe.order = GMOD.pad_left_zeros(#This_MOD.damages, i) .. "0"
+        Recipe.order = GMOD.pad_left_zeros(This_MOD.damages_count, i) .. "0"
 
         Recipe.energy_required = This_MOD.setting.time
 
@@ -354,7 +357,7 @@ function This_MOD.create_recipe(space)
 
         Recipe.subgroup = This_MOD.prefix .. space.item.name
 
-        Recipe.order = GMOD.pad_left_zeros(#This_MOD.damages, #This_MOD.damages + 1) .. "0"
+        Recipe.order = GMOD.pad_left_zeros(This_MOD.damages_count, #This_MOD.damages + 1) .. "0"
 
         Recipe.energy_required = This_MOD.setting.time
 
@@ -450,7 +453,7 @@ function This_MOD.create_item(space)
 
         Item.subgroup = This_MOD.prefix .. space.item.name
 
-        Item.order = GMOD.pad_left_zeros(#This_MOD.damages, i) .. "0"
+        Item.order = GMOD.pad_left_zeros(This_MOD.damages_count, i) .. "0"
 
         Item.resistances = { {
             type = damage,
@@ -544,7 +547,7 @@ function This_MOD.create_item(space)
 
         Item.subgroup = This_MOD.prefix .. space.item.name
 
-        Item.order = GMOD.pad_left_zeros(#This_MOD.damages, #This_MOD.damages + 1) .. "0"
+        Item.order = GMOD.pad_left_zeros(This_MOD.damages_count, #This_MOD.damages + 1) .. "0"
 
         Item.resistances = { {
             type = damage,
