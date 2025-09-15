@@ -129,7 +129,7 @@ function This_MOD.setting_mod()
     end
 
     ---Digitos necesarios para ordenar
-    This_MOD.damages_count = GMOD.digit_count(#This_MOD.damages)
+    This_MOD.damages_count = GMOD.digit_count(#This_MOD.damages) + 1
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
