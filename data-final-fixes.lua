@@ -585,8 +585,6 @@ function This_MOD.create_subgroup(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     if not space.item then return end
-    local New = This_MOD.prefix .. space.item.name
-    if GMOD.subgroups[New] then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -599,6 +597,7 @@ function This_MOD.create_subgroup(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     local Old = space.item.subgroup
+    local New = This_MOD.prefix .. space.item.name
     GMOD.duplicate_subgroup(Old, New)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
