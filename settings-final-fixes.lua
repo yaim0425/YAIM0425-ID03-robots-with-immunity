@@ -95,9 +95,9 @@ end
 
 --- Bob's Warfare mod
 if mods["bobwarfare"] then
-    table.insert(Armor_base.allowed_values, "bob-power-armor-3")
-    table.insert(Armor_base.allowed_values, "bob-power-armor-4")
-    table.insert(Armor_base.allowed_values, "bob-power-armor-5")
+    table.insert(Armor_base.allowed_values, "bob-power-armor-mk3")
+    table.insert(Armor_base.allowed_values, "bob-power-armor-mk4")
+    table.insert(Armor_base.allowed_values, "bob-power-armor-mk5")
 end
 
 --- Space Age
