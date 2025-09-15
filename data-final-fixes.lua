@@ -261,6 +261,8 @@ function This_MOD.create_recipe(space)
         Recipe.icons = GMOD.copy(space.item.icons)
         table.insert(Recipe.icons, This_MOD.indicator)
 
+        Recipe.enabled = space.tech == nil
+
         Recipe.subgroup = This_MOD.prefix .. space.item.name
 
         Recipe.order = GMOD.pad_left_zeros(This_MOD.damages_count, i) .. "0"
@@ -354,6 +356,8 @@ function This_MOD.create_recipe(space)
 
         Recipe.icons = GMOD.copy(space.item.icons)
         table.insert(Recipe.icons, This_MOD.indicator)
+
+        Recipe.enabled = space.tech == nil
 
         Recipe.subgroup = This_MOD.prefix .. space.item.name
 
