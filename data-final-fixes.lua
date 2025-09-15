@@ -404,6 +404,180 @@ function This_MOD.create_recipe(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+function This_MOD.create_item(space)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Validación
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    if not space.item then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear la receta para cada tipo de daño
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function one(i, damage)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Duplicar el elemento
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Item = GMOD.copy(space.item)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Cambiar algunas propiedades
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        Item.name = This_MOD.prefix .. damage
+
+        Item.localised_description = { "" }
+
+        Item.localised_name = GMOD.copy(space.item.localised_name)
+        table.insert(Item.localised_name, " - ")
+        table.insert(Item.localised_name, { "damage-type-name." .. damage })
+
+        Item.icons = GMOD.copy(space.item.icons)
+        table.insert(Item.icons, This_MOD.indicator)
+
+        Item.subgroup = This_MOD.prefix .. space.item.name
+
+        Item.order = GMOD.pad_left_zeros(#This_MOD.damages, i) .. "0"
+
+        Item.resistances = { {
+            type = damage,
+            decrease = 0,
+            percent = 100
+        } }
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Crear el prototipo
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        GMOD.extend(Item)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear la receta para todos los tipos de daño
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function all(damage)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Validar si se creó la receta "all"
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        if GMOD.items[This_MOD.prefix .. "all"] then
+            --- Agregar el ingrediente a la receta existente
+            table.insert(
+                GMOD.items[This_MOD.prefix .. "all"].resistances,
+                {
+                    type = damage,
+                    decrease = 0,
+                    percent = 100
+                }
+            )
+            return
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Duplicar el elemento
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Item = GMOD.copy(space.recipe)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Cambiar algunas propiedades
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        Item.name = This_MOD.prefix .. "all"
+
+        Item.localised_description = { "" }
+
+        Item.localised_name = GMOD.copy(space.item.localised_name)
+        table.insert(Item.localised_name, " - ")
+        table.insert(Item.localised_name, { "gui.all" })
+
+        Item.icons = GMOD.copy(space.item.icons)
+        table.insert(Item.icons, This_MOD.indicator)
+
+        Item.subgroup = This_MOD.prefix .. space.item.name
+
+        Item.order = GMOD.pad_left_zeros(#This_MOD.damages, #This_MOD.damages + 1) .. "0"
+
+        Item.resistances = { {
+            type = damage,
+            decrease = 0,
+            percent = 100
+        } }
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Crear el prototipo
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        GMOD.extend(Item)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear las recetas
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    for key, damage in pairs(This_MOD.damages) do
+        one(key, damage)
+        all(damage)
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 ---------------------------------------------------------------------------
 
 function This_MOD.create_subgroup(space)
