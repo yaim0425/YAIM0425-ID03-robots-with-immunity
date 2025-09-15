@@ -47,7 +47,7 @@ function This_MOD.start()
             --- Crear los elementos
             This_MOD.create_recipe(space)
             This_MOD.create_item(space)
-            -- This_MOD.create_tech(space)
+            This_MOD.create_tech(space)
             This_MOD.create_subgroup(space)
 
             --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -600,7 +600,188 @@ function This_MOD.create_item(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
----------------------------------------------------------------------------
+function This_MOD.create_tech(space)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Validación
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    if not space.item then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear la tech para cada tipo de daño
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function one(damage)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Duplicar el elemento
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Tech = GMOD.copy(space.tech)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Cambiar algunas propiedades
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        Tech.name = This_MOD.prefix .. "-" .. damage .. "--tech"
+
+        Tech.icons = GMOD.copy(space.item.icons)
+        table.insert(Tech.icons, This_MOD.indicator_tech_bg)
+        table.insert(Tech.icons, This_MOD.indicator_tech)
+
+        Tech.localised_name = GMOD.copy(space.item.localised_name)
+        table.insert(Tech.localised_name, " - ")
+        table.insert(Tech.localised_name, { "damage-type-name." .. damage })
+
+        Tech.localised_description = nil
+
+        Tech.prerequisites = { space.tech.name }
+
+        Tech.effects = { {
+            type = "unlock-recipe",
+            recipe = This_MOD.prefix .. damage
+        } }
+
+        if Tech.research_trigger then
+            Tech.research_trigger = {
+                type = "craft-item",
+                item = space.item.name,
+                count = 1
+            }
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Crear el prototipo
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        GMOD.extend(Tech)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear la tech para todos los tipos de daño
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function all(damage)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Validar si se creó la tech "all"
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Tech_name = This_MOD.prefix .. "-" .. "all" .. "--tech"
+        if data.raw.technology[Tech_name] then
+            --- Agregar el ingrediente a la receta existente
+            table.insert(
+                data.raw.technology[Tech_name].prerequisites,
+                This_MOD.prefix .. "-" .. damage .. "--tech"
+            )
+            return
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Duplicar el elemento
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Tech = GMOD.copy(space.tech)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Cambiar algunas propiedades
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        Tech.name = Tech_name
+
+        Tech.icons = GMOD.copy(space.item.icons)
+        table.insert(Tech.icons, This_MOD.indicator_tech_bg)
+        table.insert(Tech.icons, This_MOD.indicator_tech)
+
+        Tech.localised_name = GMOD.copy(space.item.localised_name)
+        table.insert(Tech.localised_name, " - ")
+        table.insert(Tech.localised_name, { "gui.all" })
+
+        Tech.localised_description = nil
+
+        Tech.prerequisites = { This_MOD.prefix .. "-" .. damage .. "--tech" }
+
+        Tech.effects = { {
+            type = "unlock-recipe",
+            recipe = This_MOD.prefix .. "all"
+        } }
+
+        if Tech.research_trigger then
+            Tech.research_trigger = {
+                type = "craft-item",
+                item = space.item.name,
+                count = 1
+            }
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Crear el prototipo
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        GMOD.extend(Tech)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear las recetas
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    for _, damage in pairs(This_MOD.damages) do
+        one(damage)
+        all(damage)
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
 
 function This_MOD.create_subgroup(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
