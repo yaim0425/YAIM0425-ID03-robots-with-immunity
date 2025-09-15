@@ -93,6 +93,13 @@ if mods["Yuoki"] then
     table.insert(Armor_base.allowed_values, "yi_walker_c")
 end
 
+--- Bob's Warfare mod
+if mods["bobwarfare"] then
+    table.insert(Armor_base.allowed_values, "bob-power-armor-3")
+    table.insert(Armor_base.allowed_values, "bob-power-armor-4")
+    table.insert(Armor_base.allowed_values, "bob-power-armor-5")
+end
+
 --- Space Age
 if mods["space-age"] then
     table.insert(Armor_base.allowed_values, "mech-armor")
