@@ -231,7 +231,7 @@ function This_MOD.create_recipe(space)
     --- Crear la receta para cada tipo de daño
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    local function one(damage)
+    local function one(i, damage)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         --- Duplicar el elemento
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -261,7 +261,7 @@ function This_MOD.create_recipe(space)
 
         Recipe.subgroup = This_MOD.prefix .. space.item.name
 
-        Recipe.order = GMOD.pad_left_zeros(#This_MOD.damages, GMOD.get_key(damage)) .. "0"
+        Recipe.order = GMOD.pad_left_zeros(#This_MOD.damages, i) .. "0"
 
         Recipe.energy_required = This_MOD.setting.time
 
@@ -355,7 +355,7 @@ function This_MOD.create_recipe(space)
 
         Recipe.subgroup = This_MOD.prefix .. space.item.name
 
-        Recipe.order = GMOD.pad_left_zeros(#This_MOD.damages, #This_MOD.damages) .. "0"
+        Recipe.order = GMOD.pad_left_zeros(#This_MOD.damages, #This_MOD.damages + 1) .. "0"
 
         Recipe.energy_required = This_MOD.setting.time
 
@@ -396,8 +396,8 @@ function This_MOD.create_recipe(space)
     --- Crear las recetas
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    for _, damage in pairs(This_MOD.damages) do
-        one(damage)
+    for key, damage in pairs(This_MOD.damages) do
+        one(key, damage)
         all(damage)
     end
 
