@@ -605,7 +605,7 @@ function This_MOD.create_tech(space)
     --- Validación
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    if not space.item then return end
+    if not space.tech then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
