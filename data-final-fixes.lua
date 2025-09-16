@@ -117,6 +117,12 @@ function This_MOD.setting_mod()
     --- Digitos necesarios para ordenar
     This_MOD.damages_count = GMOD.digit_count(#This_MOD.damages) + 1
 
+    --- Tipos a afectar
+    This_MOD.types = {
+        ["construction-robot"] = true,
+        ["logistic-robot"] = true,
+    }
+
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
