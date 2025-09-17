@@ -30,8 +30,8 @@ function This_MOD.start()
     --- Valores de la referencia
     This_MOD.setting_mod()
 
-    -- --- Obtener los elementos
-    -- This_MOD.get_elements()
+    --- Obtener los elementos
+    This_MOD.get_elements()
 
     -- --- Modificar los elementos
     -- for iKey, spaces in pairs(This_MOD.to_be_processed) do
@@ -120,7 +120,7 @@ function This_MOD.setting_mod()
     --- Tipos a afectar
     This_MOD.types = {
         ["construction-robot"] = true,
-        ["logistic-robot"] = true,
+        ["logistic-robot"] = true
     }
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -137,6 +137,76 @@ end
 ---------------------------------------------------------------------------
 
 function This_MOD.get_elements()
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    --- Función para analizar cada entidades
+    local function valide(item, entity)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Validación
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        --- Validar el tipo
+        if not This_MOD.types[entity.type] then return end
+
+        --- Validar el item
+        if not item then return end
+
+        --- Validar si ya fue procesado
+        if
+            This_MOD.processed[entity.type] and
+            This_MOD.processed[entity.type][item.name]
+        then
+            return
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Valores para el proceso
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Space = {}
+        Space.item = item
+        Space.entity = entity
+        Space.recipe = GMOD.recipes[Space.item.name]
+        Space.tech = GMOD.get_technology(Space.recipe)
+        Space.recipe = Space.recipe and Space.recipe[1] or nil
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Guardar la información
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        This_MOD.to_be_processed[entity.type] = This_MOD.to_be_processed[entity.type] or {}
+        This_MOD.to_be_processed[entity.type][entity.name] = Space
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Buscar las entidades a afectar
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    for item_name, entity in pairs(GMOD.entities) do
+        valide(GMOD.items[item_name], entity)
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
 ---------------------------------------------------------------------------
