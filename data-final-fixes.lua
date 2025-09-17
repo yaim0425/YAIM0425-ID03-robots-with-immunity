@@ -237,6 +237,9 @@ function This_MOD.create_recipe(space)
 
         Recipe.name = This_MOD.prefix .. damage
 
+        Recipe.main_product = nil
+        Recipe.maximum_productivity = 1000000
+
         Recipe.localised_description = { "" }
 
         Recipe.localised_name = GMOD.copy(space.item.localised_name)
@@ -333,10 +336,10 @@ function This_MOD.create_recipe(space)
 
         Recipe.name = This_MOD.prefix .. "all"
 
-        Recipe.localised_description = { "" }
-
         Recipe.main_product = nil
         Recipe.maximum_productivity = 1000000
+
+        Recipe.localised_description = { "" }
 
         Recipe.localised_name = GMOD.copy(space.item.localised_name)
         table.insert(Recipe.localised_name, " - ")
