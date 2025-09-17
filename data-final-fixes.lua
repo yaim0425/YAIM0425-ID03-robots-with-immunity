@@ -47,9 +47,9 @@ function This_MOD.start()
             --- Crear los elementos
             This_MOD.create_item(space)
             This_MOD.create_recipe(space)
-            This_MOD.create_entity(space)
-            This_MOD.create_tech(space)
-            This_MOD.create_subgroup(space)
+            -- This_MOD.create_entity(space)
+            -- This_MOD.create_tech(space)
+            -- This_MOD.create_subgroup(space)
 
             --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         end
@@ -227,6 +227,18 @@ function This_MOD.create_item(space)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Variable a usar
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local Prefix = This_MOD.prefix .. space.item.name .. "-"
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Crear los items
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -247,7 +259,7 @@ function This_MOD.create_item(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        Item.name = This_MOD.prefix .. (damage or "all")
+        Item.name = Prefix .. (damage or "all")
 
         Item.localised_description = { "" }
 
@@ -267,7 +279,7 @@ function This_MOD.create_item(space)
 
         Item.order = GMOD.pad_left_zeros(This_MOD.damages_count, i) .. "0"
 
-        Item.place_result = This_MOD.prefix .. (damage or "all")
+        Item.place_result = Item.name
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -297,6 +309,153 @@ function This_MOD.create_item(space)
     create_item(#This_MOD.damages + 1)
     for key, damage in pairs(This_MOD.damages) do
         create_item(key, damage)
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
+function This_MOD.create_entity(space)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Validación
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    if not space.entity then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Variable a usar
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local Prefix = This_MOD.prefix .. space.item.name .. "-"
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear para cada tipo de daño
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function one(damage)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Duplicar el elemento
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Entity = GMOD.copy(space.entity)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Cambiar algunas propiedades
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        Entity.name = Prefix .. (damage or "all")
+
+        Entity.localised_description = { "" }
+
+        Entity.localised_name = GMOD.copy(space.entity.localised_name)
+        table.insert(Entity.localised_name, " - ")
+        table.insert(Entity.localised_name,
+            damage and
+            { "damage-type-name." .. damage } or
+            { "gui.all" }
+        )
+
+        Entity.icons = GMOD.copy(space.item.icons)
+        table.insert(Entity.icons, This_MOD.indicator_bg)
+        table.insert(Entity.icons, This_MOD.indicator)
+
+        Entity.minable.results = { {
+            type = "item",
+            name = Entity.name,
+            amount = 1
+        } }
+
+        Entity.resistances = {}
+
+        if damage then
+            table.insert(
+                Entity.resistances,
+                { type = damage, percent = 100 }
+            )
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Crear el prototipo
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        GMOD.extend(Entity)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear para todos los tipos de daño
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function all(damage)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Validar si se creó "all"
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        if not GMOD.entities[Prefix .. "all"] then
+            one()
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Agregar el ingrediente a la receta existente
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        table.insert(
+            GMOD.entities[Prefix .. "all"].resistances,
+            { type = damage, percent = 100 }
+        )
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Recorrer los daños
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    for _, damage in pairs(This_MOD.damages) do
+        one(damage)
+        all(damage)
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -336,7 +495,7 @@ function This_MOD.create_recipe(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        Recipe.name = This_MOD.prefix .. (damage or "all")
+        Recipe.name = This_MOD.prefix .. space.item.name .. "-" .. (damage or "all")
 
         Recipe.main_product = nil
         Recipe.maximum_productivity = 1000000
@@ -410,7 +569,7 @@ function This_MOD.create_recipe(space)
         --- Variable a usar
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        local Name_all = This_MOD.prefix .. "all"
+        local Name_all = This_MOD.prefix .. space.item.name .. "-" .. (damage or "all")
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -466,153 +625,6 @@ function This_MOD.create_recipe(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
-function This_MOD.create_entity(space)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Validación
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    if not space.entity then return end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear para cada tipo de daño
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    local function one(damage)
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Duplicar el elemento
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        local Entity = GMOD.copy(space.entity)
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Cambiar algunas propiedades
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        Entity.name = This_MOD.prefix .. (damage or "all")
-
-        Entity.localised_description = { "" }
-
-        Entity.localised_name = GMOD.copy(space.entity.localised_name)
-        table.insert(Entity.localised_name, " - ")
-        table.insert(Entity.localised_name,
-            damage and
-            { "damage-type-name." .. damage } or
-            { "gui.all" }
-        )
-
-        Entity.icons = GMOD.copy(space.item.icons)
-        table.insert(Entity.icons, This_MOD.indicator_bg)
-        table.insert(Entity.icons, This_MOD.indicator)
-
-        Entity.minable.results = { {
-            type = "item",
-            name = This_MOD.prefix .. (damage or "all"),
-            amount = 1
-        } }
-
-        Entity.resistances = {}
-
-        if damage then
-            table.insert(
-                Entity.resistances,
-                { type = damage, percent = 100 }
-            )
-        end
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Crear el prototipo
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        GMOD.extend(Entity)
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear para todos los tipos de daño
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    local function all(damage)
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Variable a usar
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        local Name_all = This_MOD.prefix .. "all"
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Validar si se creó "all"
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        if not GMOD.entities[Name_all] then
-            one()
-        end
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Agregar el ingrediente a la receta existente
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        table.insert(
-            GMOD.entities[Name_all].resistances,
-            { type = damage, percent = 100 }
-        )
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Recorrer los daños
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    for _, damage in pairs(This_MOD.damages) do
-        one(damage)
-        all(damage)
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
 function This_MOD.create_tech(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Validación
@@ -647,7 +659,7 @@ function This_MOD.create_tech(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        Tech.name = This_MOD.prefix .. "-" .. (damage or "all") .. "--tech"
+        Tech.name = This_MOD.prefix .. "-" .. space.item.name .. "-" .. (damage or "all") .. "--tech"
 
         Tech.icons = GMOD.copy(space.item.icons)
         table.insert(Tech.icons, This_MOD.indicator_tech_bg)
@@ -670,7 +682,7 @@ function This_MOD.create_tech(space)
 
         Tech.effects = { {
             type = "unlock-recipe",
-            recipe = This_MOD.prefix .. (damage or "all")
+            recipe = This_MOD.prefix .. space.item.name .. "-" .. (damage or "all")
         } }
 
         if Tech.research_trigger then
@@ -715,7 +727,7 @@ function This_MOD.create_tech(space)
         --- Validar si se creó "all"
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        local Name_all = This_MOD.prefix .. "-" .. "all" .. "--tech"
+        local Name_all = This_MOD.prefix .. "-" .. space.item.name .. "-" .. "all" .. "--tech"
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -743,7 +755,7 @@ function This_MOD.create_tech(space)
 
         table.insert(
             data.raw.technology[Name_all].prerequisites,
-            This_MOD.prefix .. "-" .. damage .. "--tech"
+            This_MOD.prefix .. "-" .. space.item.name .. "-" .. damage .. "--tech"
         )
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
