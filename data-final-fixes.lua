@@ -48,7 +48,7 @@ function This_MOD.start()
             This_MOD.create_item(space)
             This_MOD.create_entity(space)
             This_MOD.create_recipe(space)
-            -- This_MOD.create_tech(space)
+            This_MOD.create_tech(space)
             This_MOD.create_subgroup(space)
 
             --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -625,7 +625,7 @@ function This_MOD.create_tech(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        Tech.name = This_MOD.prefix .. "-" .. space.item.name .. "-" .. (damage or "all") .. "--tech"
+        Tech.name = space.prefix .. (damage or "all") .. "-tech"
 
         Tech.icons = GMOD.copy(space.item.icons)
         table.insert(Tech.icons, This_MOD.indicator_tech_bg)
@@ -693,19 +693,7 @@ function This_MOD.create_tech(space)
         --- Validar si se creó "all"
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        local Name_all = This_MOD.prefix .. "-" .. space.item.name .. "-" .. "all" .. "--tech"
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Validar si se creó "all"
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        if not data.raw.technology[Name_all] then
+        if not data.raw.technology[space.prefix .. "all-tech"] then
             one()
         end
 
@@ -719,9 +707,8 @@ function This_MOD.create_tech(space)
         --- Agregar el prerequisito a la tech existente
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        table.insert(
-            data.raw.technology[Name_all].prerequisites,
-            This_MOD.prefix .. "-" .. space.item.name .. "-" .. damage .. "--tech"
+        table.insert(data.raw.technology[space.prefix .. "all-tech"].prerequisites,
+            space.prefix .. damage .. "-tech"
         )
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
