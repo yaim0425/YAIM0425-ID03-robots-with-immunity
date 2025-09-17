@@ -47,7 +47,7 @@ function This_MOD.start()
             --- Crear los elementos
             This_MOD.create_item(space)
             This_MOD.create_entity(space)
-            -- This_MOD.create_recipe(space)
+            This_MOD.create_recipe(space)
             -- This_MOD.create_tech(space)
             This_MOD.create_subgroup(space)
 
@@ -479,7 +479,7 @@ function This_MOD.create_recipe(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        Recipe.name = This_MOD.prefix .. space.item.name .. "-" .. (damage or "all")
+        Recipe.name = space.prefix .. (damage or "all")
 
         Recipe.main_product = nil
         Recipe.maximum_productivity = 1000000
@@ -513,14 +513,11 @@ function This_MOD.create_recipe(space)
 
         Recipe.ingredients = {}
         if damage then
-            table.insert(
-                Recipe.ingredients,
-                {
-                    type = "item",
-                    name = space.item.name,
-                    amount = 1
-                }
-            )
+            table.insert(Recipe.ingredients, {
+                type = "item",
+                name = space.item.name,
+                amount = 1
+            })
         end
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -550,22 +547,10 @@ function This_MOD.create_recipe(space)
 
     local function all(damage)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Variable a usar
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        local Name_all = This_MOD.prefix .. space.item.name .. "-" .. (damage or "all")
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         --- Validar si se creó "all"
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        if not data.raw.recipe[Name_all] then
+        if not data.raw.recipe[space.prefix .. "all"] then
             one(#This_MOD.damages + 1)
         end
 
@@ -579,14 +564,11 @@ function This_MOD.create_recipe(space)
         --- Agregar el ingrediente a la receta existente
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        table.insert(
-            data.raw.recipe[Name_all].ingredients,
-            {
-                type = "item",
-                name = This_MOD.prefix .. damage,
-                amount = 1
-            }
-        )
+        table.insert(data.raw.recipe[space.prefix .. "all"].ingredients, {
+            type = "item",
+            name = space.prefix .. damage,
+            amount = 1
+        })
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     end
