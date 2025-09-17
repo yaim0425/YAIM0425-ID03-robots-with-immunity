@@ -45,8 +45,8 @@ function This_MOD.start()
             --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
             --- Crear los elementos
-            This_MOD.create_recipe(space)
             This_MOD.create_item(space)
+            This_MOD.create_recipe(space)
             This_MOD.create_entity(space)
             This_MOD.create_tech(space)
             This_MOD.create_subgroup(space)
@@ -247,7 +247,7 @@ function This_MOD.create_recipe(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        Recipe.name = This_MOD.prefix .. (damage and damage or "all")
+        Recipe.name = This_MOD.prefix .. (damage or "all")
 
         Recipe.main_product = nil
         Recipe.maximum_productivity = 1000000
@@ -411,7 +411,7 @@ function This_MOD.create_item(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        Item.name = This_MOD.prefix .. (damage and damage or "all")
+        Item.name = This_MOD.prefix .. (damage or "all")
 
         Item.localised_description = { "" }
 
@@ -430,6 +430,8 @@ function This_MOD.create_item(space)
         Item.subgroup = This_MOD.prefix .. space.item.name
 
         Item.order = GMOD.pad_left_zeros(This_MOD.damages_count, i) .. "0"
+
+        Item.place_result = This_MOD.prefix .. (damage or "all")
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -498,7 +500,7 @@ function This_MOD.create_entity(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        Entity.name = This_MOD.prefix .. (damage and damage or "all")
+        Entity.name = This_MOD.prefix .. (damage or "all")
 
         Entity.localised_description = { "" }
 
@@ -513,6 +515,12 @@ function This_MOD.create_entity(space)
         Entity.icons = GMOD.copy(space.item.icons)
         table.insert(Entity.icons, This_MOD.indicator_bg)
         table.insert(Entity.icons, This_MOD.indicator)
+
+        Entity.minable.results = { {
+            type = "item",
+            name = This_MOD.prefix .. (damage or "all"),
+            amount = 1
+        } }
 
         Entity.resistances = {}
 
@@ -639,7 +647,7 @@ function This_MOD.create_tech(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        Tech.name = This_MOD.prefix .. "-" .. (damage and damage or "all") .. "--tech"
+        Tech.name = This_MOD.prefix .. "-" .. (damage or "all") .. "--tech"
 
         Tech.icons = GMOD.copy(space.item.icons)
         table.insert(Tech.icons, This_MOD.indicator_tech_bg)
@@ -662,7 +670,7 @@ function This_MOD.create_tech(space)
 
         Tech.effects = { {
             type = "unlock-recipe",
-            recipe = This_MOD.prefix .. (damage and damage or "all")
+            recipe = This_MOD.prefix .. (damage or "all")
         } }
 
         if Tech.research_trigger then
