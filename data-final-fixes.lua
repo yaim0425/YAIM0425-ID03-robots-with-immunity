@@ -45,11 +45,11 @@ function This_MOD.start()
             --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
             --- Crear los elementos
+            This_MOD.create_subgroup(space)
             This_MOD.create_item(space)
             This_MOD.create_entity(space)
             This_MOD.create_recipe(space)
             This_MOD.create_tech(space)
-            This_MOD.create_subgroup(space)
 
             --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         end
@@ -220,6 +220,30 @@ function This_MOD.get_elements()
 end
 
 ---------------------------------------------------------------------------
+
+function This_MOD.create_subgroup(space)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Validación
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    if not space.item then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear un nuevo subgrupo
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local Old = space.item.subgroup
+    local New = This_MOD.prefix .. space.item.name
+    GMOD.duplicate_subgroup(Old, New)
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
 
 function This_MOD.create_item(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -728,30 +752,6 @@ function This_MOD.create_tech(space)
         one(damage)
         all(damage)
     end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
-function This_MOD.create_subgroup(space)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Validación
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    if not space.item then return end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear un nuevo subgrupo
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    local Old = space.item.subgroup
-    local New = This_MOD.prefix .. space.item.name
-    GMOD.duplicate_subgroup(Old, New)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
