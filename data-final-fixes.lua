@@ -335,6 +335,9 @@ function This_MOD.create_recipe(space)
 
         Recipe.localised_description = { "" }
 
+        Recipe.main_product = nil
+        Recipe.maximum_productivity = 1000000
+
         Recipe.localised_name = GMOD.copy(space.item.localised_name)
         table.insert(Recipe.localised_name, " - ")
         table.insert(Recipe.localised_name, { "gui.all" })
