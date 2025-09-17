@@ -566,7 +566,7 @@ function This_MOD.create_entity(space)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
         if not GMOD.entities[Name_all] then
-            one(#This_MOD.damages + 1)
+            one()
         end
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
