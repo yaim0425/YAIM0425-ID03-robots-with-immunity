@@ -236,9 +236,9 @@ function This_MOD.create_subgroup(space)
     --- Crear un nuevo subgrupo
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    local Old = space.item.subgroup
-    local New = This_MOD.prefix .. space.item.name
-    GMOD.duplicate_subgroup(Old, New)
+    space.prefix = string.sub(space.prefix, 1, -2)
+    GMOD.duplicate_subgroup(space.item.subgroup, space.prefix)
+    space.prefix = space.prefix .. "-"
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
