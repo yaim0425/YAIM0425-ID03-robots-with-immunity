@@ -381,7 +381,7 @@ function This_MOD.create_item(space)
     --- Crear los items
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    local function item(i, damage)
+    local function create_item(i, damage)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         --- Duplicar el elemento
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -398,21 +398,17 @@ function This_MOD.create_item(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        if damage then
-            Item.name = This_MOD.prefix .. damage
-        else
-            Item.name = This_MOD.prefix .. "all"
-        end
+        Item.name = This_MOD.prefix .. (damage and damage or "all")
 
         Item.localised_description = { "" }
 
         Item.localised_name = GMOD.copy(space.item.localised_name)
         table.insert(Item.localised_name, " - ")
-        if damage then
-            table.insert(Item.localised_name, { "damage-type-name." .. damage })
-        else
-            table.insert(Item.localised_name, { "gui.all" })
-        end
+        table.insert(Item.localised_name,
+            damage and
+            { "damage-type-name." .. damage } or
+            { "gui.all" }
+        )
 
         Item.icons = GMOD.copy(space.item.icons)
         table.insert(Item.icons, This_MOD.indicator_bg)
@@ -447,9 +443,9 @@ function This_MOD.create_item(space)
     --- Recorrer los daños
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    item(This_MOD.damages_count, nil)
+    create_item(#This_MOD.damages + 1, nil)
     for key, damage in pairs(This_MOD.damages) do
-        item(key, damage)
+        create_item(key, damage)
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
