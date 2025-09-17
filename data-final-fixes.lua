@@ -254,7 +254,7 @@ function This_MOD.create_recipe(space)
 
         Recipe.localised_description = { "" }
 
-        Recipe.localised_name = GMOD.copy(space.item.localised_name)
+        Recipe.localised_name = GMOD.copy(space.entity.localised_name)
         table.insert(Recipe.localised_name, " - ")
         table.insert(Recipe.localised_name,
             damage and
@@ -415,7 +415,7 @@ function This_MOD.create_item(space)
 
         Item.localised_description = { "" }
 
-        Item.localised_name = GMOD.copy(space.item.localised_name)
+        Item.localised_name = GMOD.copy(space.entity.localised_name)
         table.insert(Item.localised_name, " - ")
         table.insert(Item.localised_name,
             damage and
@@ -645,7 +645,7 @@ function This_MOD.create_tech(space)
         table.insert(Tech.icons, This_MOD.indicator_tech_bg)
         table.insert(Tech.icons, This_MOD.indicator_tech)
 
-        Tech.localised_name = GMOD.copy(space.item.localised_name)
+        Tech.localised_name = GMOD.copy(space.entity.localised_name)
         table.insert(Tech.localised_name, " - ")
         table.insert(Tech.localised_name,
             damage and
