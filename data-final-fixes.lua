@@ -412,6 +412,147 @@ function This_MOD.create_recipe(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+function This_MOD.create_item(space)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Validación
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    if not space.item then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear para cada tipo de daño
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function one(i, damage)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Duplicar el elemento
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Item = GMOD.copy(space.item)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Cambiar algunas propiedades
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        Item.name = This_MOD.prefix .. damage
+
+        Item.localised_description = { "" }
+
+        Item.localised_name = GMOD.copy(space.item.localised_name)
+        table.insert(Item.localised_name, " - ")
+        table.insert(Item.localised_name, { "damage-type-name." .. damage })
+
+        Item.icons = GMOD.copy(space.item.icons)
+        table.insert(Item.icons, This_MOD.indicator_bg)
+        table.insert(Item.icons, This_MOD.indicator)
+
+        Item.subgroup = This_MOD.prefix .. space.item.name
+
+        Item.order = GMOD.pad_left_zeros(This_MOD.damages_count, i) .. "0"
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Crear el prototipo
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        GMOD.extend(Item)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear para todos los tipos de daño
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function all()
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Duplicar el elemento
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Item = GMOD.copy(space.item)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Cambiar algunas propiedades
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        Item.name = This_MOD.prefix .. "all"
+
+        Item.localised_description = { "" }
+
+        Item.localised_name = GMOD.copy(space.item.localised_name)
+        table.insert(Item.localised_name, " - ")
+        table.insert(Item.localised_name, { "gui.all" })
+
+        Item.icons = GMOD.copy(space.item.icons)
+        table.insert(Item.icons, This_MOD.indicator_bg)
+        table.insert(Item.icons, This_MOD.indicator)
+
+        Item.subgroup = This_MOD.prefix .. space.item.name
+
+        Item.order = GMOD.pad_left_zeros(This_MOD.damages_count, #This_MOD.damages + 1) .. "0"
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Crear el prototipo
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        GMOD.extend(Item)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Recorrer los daños
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    all()
+    for key, damage in pairs(This_MOD.damages) do
+        one(key, damage)
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 ---------------------------------------------------------------------------
 
 
