@@ -246,7 +246,7 @@ function This_MOD.create_recipe(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        Recipe.name = This_MOD.prefix .. damage
+        Recipe.name = This_MOD.prefix .. (damage and damage or "all")
 
         Recipe.main_product = nil
         Recipe.maximum_productivity = 1000000
@@ -255,7 +255,11 @@ function This_MOD.create_recipe(space)
 
         Recipe.localised_name = GMOD.copy(space.item.localised_name)
         table.insert(Recipe.localised_name, " - ")
-        table.insert(Recipe.localised_name, { "damage-type-name." .. damage })
+        table.insert(Recipe.localised_name,
+            damage and
+            { "damage-type-name." .. damage } or
+            { "gui.all" }
+        )
 
         Recipe.icons = GMOD.copy(space.item.icons)
         table.insert(Recipe.icons, This_MOD.indicator)
@@ -274,11 +278,17 @@ function This_MOD.create_recipe(space)
             amount = 1
         } }
 
-        Recipe.ingredients = { {
-            type = "item",
-            name = space.item.name,
-            amount = 1
-        } }
+        Recipe.ingredients = {}
+        if damage then
+            table.insert(
+                Recipe.ingredients,
+                {
+                    type = "item",
+                    name = space.item.name,
+                    amount = 1
+                }
+            )
+        end
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -310,17 +320,8 @@ function This_MOD.create_recipe(space)
         --- Validar si se creó "all"
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        if data.raw.recipe[This_MOD.prefix .. "all"] then
-            --- Agregar el ingrediente a la receta existente
-            table.insert(
-                data.raw.recipe[This_MOD.prefix .. "all"].ingredients,
-                {
-                    type = "item",
-                    name = This_MOD.prefix .. damage,
-                    amount = 1
-                }
-            )
-            return
+        if not data.raw.recipe[This_MOD.prefix .. "all"] then
+            one(#This_MOD.damages + 1, nil)
         end
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -330,66 +331,17 @@ function This_MOD.create_recipe(space)
 
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Duplicar el elemento
+        --- Agregar el ingrediente a la receta existente
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        local Recipe = GMOD.copy(space.recipe)
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Cambiar algunas propiedades
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        Recipe.name = This_MOD.prefix .. "all"
-
-        Recipe.main_product = nil
-        Recipe.maximum_productivity = 1000000
-
-        Recipe.localised_description = { "" }
-
-        Recipe.localised_name = GMOD.copy(space.item.localised_name)
-        table.insert(Recipe.localised_name, " - ")
-        table.insert(Recipe.localised_name, { "gui.all" })
-
-        Recipe.icons = GMOD.copy(space.item.icons)
-        table.insert(Recipe.icons, This_MOD.indicator)
-
-        Recipe.enabled = space.tech == nil
-
-        Recipe.subgroup = This_MOD.prefix .. space.item.name
-
-        Recipe.order = GMOD.pad_left_zeros(This_MOD.damages_count, #This_MOD.damages + 1) .. "0"
-
-        Recipe.energy_required = This_MOD.setting.time
-
-        Recipe.results = { {
-            type = "item",
-            name = Recipe.name,
-            amount = 1
-        } }
-
-        Recipe.ingredients = { {
-            type = "item",
-            name = This_MOD.prefix .. damage,
-            amount = 1
-        } }
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Crear el prototipo
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        GMOD.extend(Recipe)
+        table.insert(
+            data.raw.recipe[This_MOD.prefix .. "all"].ingredients,
+            {
+                type = "item",
+                name = This_MOD.prefix .. damage,
+                amount = 1
+            }
+        )
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     end
