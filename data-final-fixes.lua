@@ -46,10 +46,10 @@ function This_MOD.start()
 
             --- Crear los elementos
             This_MOD.create_item(space)
-            This_MOD.create_recipe(space)
-            -- This_MOD.create_entity(space)
+            This_MOD.create_entity(space)
+            -- This_MOD.create_recipe(space)
             -- This_MOD.create_tech(space)
-            -- This_MOD.create_subgroup(space)
+            This_MOD.create_subgroup(space)
 
             --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         end
@@ -174,9 +174,17 @@ function This_MOD.get_elements()
         local Space = {}
         Space.item = item
         Space.entity = entity
+
         Space.recipe = GMOD.recipes[Space.item.name]
         Space.tech = GMOD.get_technology(Space.recipe)
         Space.recipe = Space.recipe and Space.recipe[1] or nil
+
+        local That_MOD = GMOD.get_id_and_name(item.name)
+        Space.prefix = This_MOD.prefix
+        if That_MOD then
+            Space.prefix = GMOD.name .. That_MOD.ids .. This_MOD.id .. "-"
+        end
+        Space.prefix = Space.prefix .. item.name .. "-"
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -227,18 +235,6 @@ function This_MOD.create_item(space)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Variable a usar
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    local Prefix = This_MOD.prefix .. space.item.name .. "-"
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Crear los items
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -259,7 +255,7 @@ function This_MOD.create_item(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        Item.name = Prefix .. (damage or "all")
+        Item.name = space.prefix .. (damage or "all")
 
         Item.localised_description = { "" }
 
@@ -328,18 +324,6 @@ function This_MOD.create_entity(space)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Variable a usar
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    local Prefix = This_MOD.prefix .. space.item.name .. "-"
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Crear para cada tipo de daño
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -360,7 +344,7 @@ function This_MOD.create_entity(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        Entity.name = Prefix .. (damage or "all")
+        Entity.name = space.prefix .. (damage or "all")
 
         Entity.localised_description = { "" }
 
@@ -421,7 +405,7 @@ function This_MOD.create_entity(space)
         --- Validar si se creó "all"
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        if not GMOD.entities[Prefix .. "all"] then
+        if not GMOD.entities[space.prefix .. "all"] then
             one()
         end
 
@@ -436,7 +420,7 @@ function This_MOD.create_entity(space)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
         table.insert(
-            GMOD.entities[Prefix .. "all"].resistances,
+            GMOD.entities[space.prefix .. "all"].resistances,
             { type = damage, percent = 100 }
         )
 
