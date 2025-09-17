@@ -33,26 +33,27 @@ function This_MOD.start()
     --- Obtener los elementos
     This_MOD.get_elements()
 
-    -- --- Modificar los elementos
-    -- for iKey, spaces in pairs(This_MOD.to_be_processed) do
-    --     for jKey, space in pairs(spaces) do
-    --         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Modificar los elementos
+    for iKey, spaces in pairs(This_MOD.to_be_processed) do
+        for jKey, space in pairs(spaces) do
+            --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --         --- Marcar como procesado
-    --         This_MOD.processed[iKey] = This_MOD.processed[iKey] or {}
-    --         This_MOD.processed[iKey][jKey] = true
+            --- Marcar como procesado
+            This_MOD.processed[iKey] = This_MOD.processed[iKey] or {}
+            This_MOD.processed[iKey][jKey] = true
 
-    --         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+            --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --         --- Crear los elementos
-    --         This_MOD.create_recipe(space)
-    --         This_MOD.create_item(space)
-    --         This_MOD.create_tech(space)
-    --         This_MOD.create_subgroup(space)
+            --- Crear los elementos
+            This_MOD.create_recipe(space)
+            This_MOD.create_item(space)
+            This_MOD.create_entity(space)
+            This_MOD.create_tech(space)
+            This_MOD.create_subgroup(space)
 
-    --         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --     end
-    -- end
+            --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        end
+    end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
