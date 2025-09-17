@@ -138,7 +138,7 @@ end
 
 function This_MOD.get_elements()
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Función para analizar cada elemento
+    --- Función para analizar cada entidad
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     local function valide(item, entity)
