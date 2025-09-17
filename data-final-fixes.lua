@@ -213,6 +213,95 @@ end
 
 ---------------------------------------------------------------------------
 
+function This_MOD.create_item(space)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Validación
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    if not space.item then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear los items
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function create_item(i, damage)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Duplicar el elemento
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Item = GMOD.copy(space.item)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Cambiar algunas propiedades
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        Item.name = This_MOD.prefix .. (damage or "all")
+
+        Item.localised_description = { "" }
+
+        Item.localised_name = GMOD.copy(space.entity.localised_name)
+        table.insert(Item.localised_name, " - ")
+        table.insert(Item.localised_name,
+            damage and
+            { "damage-type-name." .. damage } or
+            { "gui.all" }
+        )
+
+        Item.icons = GMOD.copy(space.item.icons)
+        table.insert(Item.icons, This_MOD.indicator_bg)
+        table.insert(Item.icons, This_MOD.indicator)
+
+        Item.subgroup = This_MOD.prefix .. space.item.name
+
+        Item.order = GMOD.pad_left_zeros(This_MOD.damages_count, i) .. "0"
+
+        Item.place_result = This_MOD.prefix .. (damage or "all")
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Crear el prototipo
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        GMOD.extend(Item)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Recorrer los daños
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    create_item(#This_MOD.damages + 1)
+    for key, damage in pairs(This_MOD.damages) do
+        create_item(key, damage)
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 function This_MOD.create_recipe(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Validación
@@ -372,95 +461,6 @@ function This_MOD.create_recipe(space)
     for key, damage in pairs(This_MOD.damages) do
         one(key, damage)
         all(damage)
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-end
-
-function This_MOD.create_item(space)
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Validación
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    if not space.item then return end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear los items
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    local function create_item(i, damage)
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Duplicar el elemento
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        local Item = GMOD.copy(space.item)
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Cambiar algunas propiedades
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        Item.name = This_MOD.prefix .. (damage or "all")
-
-        Item.localised_description = { "" }
-
-        Item.localised_name = GMOD.copy(space.entity.localised_name)
-        table.insert(Item.localised_name, " - ")
-        table.insert(Item.localised_name,
-            damage and
-            { "damage-type-name." .. damage } or
-            { "gui.all" }
-        )
-
-        Item.icons = GMOD.copy(space.item.icons)
-        table.insert(Item.icons, This_MOD.indicator_bg)
-        table.insert(Item.icons, This_MOD.indicator)
-
-        Item.subgroup = This_MOD.prefix .. space.item.name
-
-        Item.order = GMOD.pad_left_zeros(This_MOD.damages_count, i) .. "0"
-
-        Item.place_result = This_MOD.prefix .. (damage or "all")
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Crear el prototipo
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        GMOD.extend(Item)
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Recorrer los daños
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    create_item(#This_MOD.damages + 1)
-    for key, damage in pairs(This_MOD.damages) do
-        create_item(key, damage)
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
