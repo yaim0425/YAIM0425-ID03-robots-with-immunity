@@ -451,6 +451,149 @@ function This_MOD.create_item(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
 
+function This_MOD.create_tech(space)
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Validación
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    if not space.tech then return end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear para cada tipo de daño
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function one(damage)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Duplicar el elemento
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Tech = GMOD.copy(space.tech)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Cambiar algunas propiedades
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        Tech.name = This_MOD.prefix .. "-" .. (damage and damage or "all") .. "--tech"
+
+        Tech.icons = GMOD.copy(space.item.icons)
+        table.insert(Tech.icons, This_MOD.indicator_tech_bg)
+        table.insert(Tech.icons, This_MOD.indicator_tech)
+
+        Tech.localised_name = GMOD.copy(space.item.localised_name)
+        table.insert(Tech.localised_name, " - ")
+        table.insert(Tech.localised_name,
+            damage and
+            { "damage-type-name." .. damage } or
+            { "gui.all" }
+        )
+
+        Tech.localised_description = nil
+
+        Tech.prerequisites = {}
+        if damage then
+            table.insert(Tech.prerequisites, space.tech.name)
+        end
+
+        Tech.effects = { {
+            type = "unlock-recipe",
+            recipe = This_MOD.prefix .. (damage and damage or "all")
+        } }
+
+        if Tech.research_trigger then
+            Tech.research_trigger = {
+                type = "craft-item",
+                item =
+                    This_MOD.prefix .. (
+                        damage and damage or
+                        This_MOD.damages[math.random(1, #This_MOD.damages)]
+                    ),
+                count = 1
+            }
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Crear el prototipo
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        GMOD.extend(Tech)
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Crear para todos los tipos de daño
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    local function all(damage)
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Validar si se creó "all"
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Tech_name = This_MOD.prefix .. "-" .. "all" .. "--tech"
+        if not data.raw.technology[Tech_name] then
+            one()
+        end
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Agregar el prerequisito a la tech existente
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        table.insert(
+            data.raw.technology[Tech_name].prerequisites,
+            This_MOD.prefix .. "-" .. damage .. "--tech"
+        )
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Recorrer los daños
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    for _, damage in pairs(This_MOD.damages) do
+        one(damage)
+        all(damage)
+    end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+end
+
 ---------------------------------------------------------------------------
 
 
