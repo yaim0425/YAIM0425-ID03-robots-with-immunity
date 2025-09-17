@@ -179,12 +179,10 @@ function This_MOD.get_elements()
         Space.tech = GMOD.get_technology(Space.recipe)
         Space.recipe = Space.recipe and Space.recipe[1] or nil
 
-        local That_MOD = GMOD.get_id_and_name(item.name)
-        Space.prefix = This_MOD.prefix
-        if That_MOD then
-            Space.prefix = GMOD.name .. That_MOD.ids .. This_MOD.id .. "-"
-        end
-        Space.prefix = Space.prefix .. item.name .. "-"
+        Space.prefix =
+            GMOD.name ..
+            (GMOD.get_id_and_name(item.name) or { ids = "-" }).ids ..
+            This_MOD.id .. "-" .. item.name .. "-"
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
