@@ -426,10 +426,10 @@ function This_MOD.create_item(space)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear para cada tipo de daño
+    --- Crear los items
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    local function one(i, damage)
+    local function item(i, damage)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         --- Duplicar el elemento
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -446,13 +446,21 @@ function This_MOD.create_item(space)
         --- Cambiar algunas propiedades
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        Item.name = This_MOD.prefix .. damage
+        if damage then
+            Item.name = This_MOD.prefix .. damage
+        else
+            Item.name = This_MOD.prefix .. "all"
+        end
 
         Item.localised_description = { "" }
 
         Item.localised_name = GMOD.copy(space.item.localised_name)
         table.insert(Item.localised_name, " - ")
-        table.insert(Item.localised_name, { "damage-type-name." .. damage })
+        if damage then
+            table.insert(Item.localised_name, { "damage-type-name." .. damage })
+        else
+            table.insert(Item.localised_name, { "gui.all" })
+        end
 
         Item.icons = GMOD.copy(space.item.icons)
         table.insert(Item.icons, This_MOD.indicator_bg)
@@ -484,70 +492,12 @@ function This_MOD.create_item(space)
 
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Crear para todos los tipos de daño
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    local function all()
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Duplicar el elemento
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        local Item = GMOD.copy(space.item)
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Cambiar algunas propiedades
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        Item.name = This_MOD.prefix .. "all"
-
-        Item.localised_description = { "" }
-
-        Item.localised_name = GMOD.copy(space.item.localised_name)
-        table.insert(Item.localised_name, " - ")
-        table.insert(Item.localised_name, { "gui.all" })
-
-        Item.icons = GMOD.copy(space.item.icons)
-        table.insert(Item.icons, This_MOD.indicator_bg)
-        table.insert(Item.icons, This_MOD.indicator)
-
-        Item.subgroup = This_MOD.prefix .. space.item.name
-
-        Item.order = GMOD.pad_left_zeros(This_MOD.damages_count, #This_MOD.damages + 1) .. "0"
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-        --- Crear el prototipo
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-        GMOD.extend(Item)
-
-        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
     --- Recorrer los daños
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    all()
+    item(This_MOD.damages_count, nil)
     for key, damage in pairs(This_MOD.damages) do
-        one(key, damage)
+        item(key, damage)
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
