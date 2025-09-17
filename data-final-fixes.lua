@@ -653,7 +653,7 @@ function This_MOD.create_tech(space)
             { "gui.all" }
         )
 
-        Tech.localised_description = nil
+        Tech.localised_description = { "" }
 
         Tech.prerequisites = {}
         if damage then
