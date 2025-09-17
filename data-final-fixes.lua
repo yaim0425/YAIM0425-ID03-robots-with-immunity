@@ -317,11 +317,23 @@ function This_MOD.create_recipe(space)
 
     local function all(damage)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Variable a usar
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        local Name_all = This_MOD.prefix .. "all"
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         --- Validar si se creó "all"
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        if not data.raw.recipe[This_MOD.prefix .. "all"] then
-            one(#This_MOD.damages + 1, nil)
+        if not data.raw.recipe[Name_all] then
+            one(#This_MOD.damages + 1)
         end
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -335,7 +347,7 @@ function This_MOD.create_recipe(space)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
         table.insert(
-            data.raw.recipe[This_MOD.prefix .. "all"].ingredients,
+            data.raw.recipe[Name_all].ingredients,
             {
                 type = "item",
                 name = This_MOD.prefix .. damage,
@@ -443,7 +455,7 @@ function This_MOD.create_item(space)
     --- Recorrer los daños
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    create_item(#This_MOD.damages + 1, nil)
+    create_item(#This_MOD.damages + 1)
     for key, damage in pairs(This_MOD.damages) do
         create_item(key, damage)
     end
@@ -553,8 +565,19 @@ function This_MOD.create_tech(space)
         --- Validar si se creó "all"
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-        local Tech_name = This_MOD.prefix .. "-" .. "all" .. "--tech"
-        if not data.raw.technology[Tech_name] then
+        local Name_all = This_MOD.prefix .. "-" .. "all" .. "--tech"
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+        --- Validar si se creó "all"
+        --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+        if not data.raw.technology[Name_all] then
             one()
         end
 
@@ -569,7 +592,7 @@ function This_MOD.create_tech(space)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
         table.insert(
-            data.raw.technology[Tech_name].prerequisites,
+            data.raw.technology[Name_all].prerequisites,
             This_MOD.prefix .. "-" .. damage .. "--tech"
         )
 
