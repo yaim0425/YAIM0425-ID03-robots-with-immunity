@@ -669,14 +669,14 @@ function This_MOD.create_tech(space)
 
         Tech.effects = { {
             type = "unlock-recipe",
-            recipe = This_MOD.prefix .. space.item.name .. "-" .. (damage or "all")
+            recipe = space.prefix .. (damage or "all")
         } }
 
         if Tech.research_trigger then
             Tech.research_trigger = {
                 type = "craft-item",
                 item =
-                    This_MOD.prefix .. (
+                    space.prefix .. (
                         damage or
                         This_MOD.damages[math.random(1, #This_MOD.damages)]
                     ),
