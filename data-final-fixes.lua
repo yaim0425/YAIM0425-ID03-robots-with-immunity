@@ -677,7 +677,7 @@ function This_MOD.create_tech(space)
                 type = "craft-item",
                 item =
                     This_MOD.prefix .. (
-                        damage and damage or
+                        damage or
                         This_MOD.damages[math.random(1, #This_MOD.damages)]
                     ),
                 count = 1
