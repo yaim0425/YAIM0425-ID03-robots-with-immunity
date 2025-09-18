@@ -236,9 +236,9 @@ function This_MOD.create_subgroup(space)
     --- Crear un nuevo subgrupo
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    space.prefix = string.sub(space.prefix, 1, -2)
-    GMOD.duplicate_subgroup(space.item.subgroup, space.prefix)
-    space.prefix = space.prefix .. "-"
+    local Old = space.item.subgroup
+    local New = string.sub(space.prefix, 1, -2)
+    GMOD.duplicate_subgroup(Old, New)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
@@ -289,11 +289,10 @@ function This_MOD.create_item(space)
             { "gui.all" }
         )
 
-        Item.icons = GMOD.copy(space.item.icons)
         table.insert(Item.icons, This_MOD.indicator_bg)
         table.insert(Item.icons, This_MOD.indicator)
 
-        Item.subgroup = This_MOD.prefix .. space.item.name
+        Item.subgroup = string.sub(space.prefix, 1, -2)
 
         Item.order = GMOD.pad_left_zeros(This_MOD.damages_count, i) .. "0"
 
@@ -521,7 +520,7 @@ function This_MOD.create_recipe(space)
 
         Recipe.enabled = space.tech == nil
 
-        Recipe.subgroup = This_MOD.prefix .. space.item.name
+        Recipe.subgroup = string.sub(space.prefix, 1, -2)
 
         Recipe.order = GMOD.pad_left_zeros(This_MOD.damages_count, i) .. "0"
 
