@@ -116,7 +116,7 @@ function This_MOD.setting_mod()
     end
 
     --- Digitos necesarios para ordenar
-    This_MOD.damages_count = GMOD.digit_count(#This_MOD.damages) + 1
+    This_MOD.damages_digits = GMOD.digit_count(#This_MOD.damages) + 1
 
     --- Tipos a afectar
     This_MOD.types = {
@@ -294,7 +294,7 @@ function This_MOD.create_item(space)
 
         Item.subgroup = string.sub(space.prefix, 1, -2)
 
-        Item.order = GMOD.pad_left_zeros(This_MOD.damages_count, i) .. "0"
+        Item.order = GMOD.pad_left_zeros(This_MOD.damages_digits, i) .. "0"
 
         Item.place_result = Item.name
 
@@ -522,7 +522,7 @@ function This_MOD.create_recipe(space)
 
         Recipe.subgroup = string.sub(space.prefix, 1, -2)
 
-        Recipe.order = GMOD.pad_left_zeros(This_MOD.damages_count, i) .. "0"
+        Recipe.order = GMOD.pad_left_zeros(This_MOD.damages_digits, i) .. "0"
 
         Recipe.energy_required = This_MOD.setting.time
 
