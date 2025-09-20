@@ -179,10 +179,24 @@ function This_MOD.get_elements()
         Space.tech = GMOD.get_technology(Space.recipe)
         Space.recipe = Space.recipe and Space.recipe[1] or nil
 
+        Space.part =
+            GMOD.get_id_and_name(Space.item.subgroup) or
+            { name = Space.item.subgroup }
+        Space.subgroup =
+            This_MOD.prefix ..
+            Space.part.name .. "-" ..
+            Space.entity.type
+
+        Space.part =
+            GMOD.get_id_and_name(entity.name) or
+            { ids = "-", name = entity.name }
         Space.prefix =
             GMOD.name ..
-            (GMOD.get_id_and_name(entity.name) or { ids = "-" }).ids ..
-            This_MOD.id .. "-" .. entity.name .. "-"
+            Space.part.ids ..
+            This_MOD.id .. "-" ..
+            Space.part.name .. "-"
+
+        Space.part = nil
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
@@ -237,7 +251,7 @@ function This_MOD.create_subgroup(space)
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
     local Old = space.item.subgroup
-    local New = string.sub(space.prefix, 1, -2)
+    local New = space.subgroup
     GMOD.duplicate_subgroup(Old, New)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -292,7 +306,7 @@ function This_MOD.create_item(space)
         table.insert(Item.icons, This_MOD.indicator_bg)
         table.insert(Item.icons, This_MOD.indicator)
 
-        Item.subgroup = string.sub(space.prefix, 1, -2)
+        Item.subgroup = space.subgroup
 
         Item.order = GMOD.pad_left_zeros(This_MOD.damages_digits, i) .. "0"
 
@@ -520,7 +534,7 @@ function This_MOD.create_recipe(space)
 
         Recipe.enabled = space.tech == nil
 
-        Recipe.subgroup = string.sub(space.prefix, 1, -2)
+        Recipe.subgroup = space.subgroup
 
         Recipe.order = GMOD.pad_left_zeros(This_MOD.damages_digits, i) .. "0"
 
