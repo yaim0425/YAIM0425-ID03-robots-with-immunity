@@ -70,9 +70,13 @@ end
 
 function This_MOD.setting_mod()
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Validar si se cargó antes
+    --- Validación
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
+    --- Contenedor de los elementos que el MOD modoficará
+    This_MOD.to_be_processed = {}
+
+    --- Validar si se cargó antes
     if This_MOD.processed then return end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -85,8 +89,7 @@ function This_MOD.setting_mod()
     --- Valores de la referencia en todos los MODs
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Contenedor de los elementos que el MOD modoficó o modificará
-    This_MOD.to_be_processed = {}
+    --- Contenedor de los elementos que el MOD modoficó
     This_MOD.processed = {}
 
     --- Cargar la configuración
