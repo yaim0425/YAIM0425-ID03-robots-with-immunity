@@ -119,7 +119,7 @@ function This_MOD.setting_mod()
     end
 
     --- Digitos necesarios para ordenar
-    This_MOD.damages_digits = GMOD.digit_count(#This_MOD.damages) + 1
+    This_MOD.damages_digits = 0
 
     --- Tipos a afectar
     This_MOD.types = {
@@ -201,6 +201,8 @@ function This_MOD.get_elements()
 
         Space.part = nil
 
+        Space.order = item.order
+
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
@@ -230,6 +232,44 @@ function This_MOD.get_elements()
     for item_name, entity in pairs(GMOD.entities) do
         valide(GMOD.items[item_name], entity)
     end
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+
+
+
+
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+    --- Establever el order
+    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+    for _, values in pairs(This_MOD.to_be_processed) do
+        local Orders = {}
+
+        for _, value in pairs(values) do
+            table.insert(Orders, value.order)
+        end
+
+        table.sort(Orders)
+
+        local Digits = GMOD.digit_count(#Orders)
+        if This_MOD.damages_digits < Digits then
+            This_MOD.damages_digits = Digits
+        end
+
+        for _, value in pairs(values) do
+            for key, order in pairs(Orders) do
+                if value.order == order then
+                    value.order = key * (10 ^ GMOD.digit_count(#This_MOD.damages + 1))
+                    break
+                end
+            end
+        end
+    end
+
+    This_MOD.damages_digits = 1 +
+        GMOD.digit_count(This_MOD.damages_digits) +
+        GMOD.digit_count(#This_MOD.damages)
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
