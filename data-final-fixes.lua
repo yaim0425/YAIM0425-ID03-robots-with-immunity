@@ -351,7 +351,7 @@ function This_MOD.create_item(space)
 
         Item.subgroup = space.subgroup
 
-        Item.order = GMOD.pad_left_zeros(This_MOD.damages_digits, i) .. "0"
+        Item.order = GMOD.pad_left_zeros(This_MOD.damages_digits, space.order + i) .. "0"
 
         Item.place_result = Item.name
 
@@ -579,7 +579,7 @@ function This_MOD.create_recipe(space)
 
         Recipe.subgroup = space.subgroup
 
-        Recipe.order = GMOD.pad_left_zeros(This_MOD.damages_digits, i) .. "0"
+        Recipe.order = GMOD.pad_left_zeros(This_MOD.damages_digits, space.order + i) .. "0"
 
         Recipe.energy_required = This_MOD.setting.time
 
