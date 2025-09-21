@@ -138,7 +138,7 @@ function This_MOD.get_elements()
     --- Función para analizar cada elemento
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    local function valide(item)
+    local function valide_armor(item)
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
         --- Validación
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -205,7 +205,7 @@ function This_MOD.get_elements()
     --- Buscar las entidades a afectar
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    valide(GMOD.items[This_MOD.setting.armor_base])
+    valide_armor(GMOD.items[This_MOD.setting.armor_base])
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 end
