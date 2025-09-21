@@ -97,6 +97,7 @@ function This_MOD.setting_mod()
     --- Indicador del mod
     local Indicator = data.raw["virtual-signal"]["signal-heart"].icons[1].icon
     This_MOD.indicator = { icon = Indicator, scale = 0.15, shift = { 12, -12 } }
+    This_MOD.indicator_bg = { icon = GMOD.color.black, scale = 0.15, shift = { 12, -12 } }
     This_MOD.indicator_tech = { icon = Indicator, scale = 0.50, shift = { 50, -50 } }
     This_MOD.indicator_tech_bg = { icon = GMOD.color.black, scale = 0.50, shift = { 50, -50 } }
 
@@ -281,6 +282,7 @@ function This_MOD.create_item(space)
             { "gui.all" }
         )
 
+        table.insert(Item.icons, This_MOD.indicator_bg)
         table.insert(Item.icons, This_MOD.indicator)
 
         Item.subgroup = string.sub(space.prefix, 1, -2)
@@ -424,6 +426,7 @@ function This_MOD.create_recipe(space)
         )
 
         Recipe.icons = GMOD.copy(space.item.icons)
+        table.insert(Recipe.icons, This_MOD.indicator_bg)
         table.insert(Recipe.icons, This_MOD.indicator)
 
         Recipe.enabled = space.tech == nil
