@@ -1,11 +1,12 @@
 {
-  "name": "YAIM0425-i5MOD02-armors-with-immunity",
+  "name": "YAIM0425-i0MOD03-armors-with-immunity",
   "version": "0.0.1",
-  "title": "YAIM0425 i5MOD02 Armors with immunity",
-  "author": "YAIM904",
+  "title": "YAIM0425 i0MOD03 Armors with immunity",
+  "author": "YAIM0425",
   "factorio_version": "2.0",
   "description": "Create one armor that makes you immune to each damage and another one immune to everything. [[I accept suggestions]]",
+  "homepage": "https://github.com/yaim0425/YAIM0425-i0MOD03-armors-with-immunity",
   "dependencies": [
-    "YAIM0425-i5MOD50-core"
+    "YAIM0425-i0MOD00-core"
   ]
 }
