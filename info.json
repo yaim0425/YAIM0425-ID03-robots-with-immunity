@@ -1,0 +1,12 @@
+{
+  "name": "YAIM0425-i0MOD04-robots-with-immunity",
+  "version": "0.0.1",
+  "title": "YAIM0425 i0MOD04 Robots with immunity",
+  "author": "YAIM0425",
+  "factorio_version": "2.0",
+  "description": "Create a copy of the construction and logistics robots that are immune to each type of damage and another that is immune to everything. [[I accept suggestions]]",
+  "homepage": "https://github.com/yaim0425/YAIM0425-i0MOD04-robots-with-immunity",
+  "dependencies": [
+    "YAIM0425-i0MOD00-core"
+  ]
+}
