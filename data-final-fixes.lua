@@ -112,9 +112,6 @@ function This_MOD.setting_mod()
     --- Valores de la referencia en este MOD
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
-    --- Daños a procesar
-    This_MOD.damages = {}
-
     --- Tipos a afectar
     This_MOD.types = {
         ["construction-robot"] = true,
