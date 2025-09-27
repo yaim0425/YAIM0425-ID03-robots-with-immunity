@@ -266,12 +266,12 @@ function This_MOD.get_elements()
         table.sort(Orders)
 
         --- Cantidad de dígitos necesarios
-        local Digit = 1 + Expo + GMOD.digit_count(#Orders)
+        local Digits = 1 + Expo + GMOD.digit_count(#Orders)
 
         --- Corregir los spaces
         for _, space in pairs(types) do
             --- Cantidad de dígitos necesarios
-            space.digits = Digit
+            space.digits = Digits
 
             --- Reemplazar los orders por números consecutivos
             for key, order in pairs(Orders) do
