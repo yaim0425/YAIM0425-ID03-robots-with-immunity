@@ -181,6 +181,7 @@ function This_MOD.get_elements()
             if not Processed then break end
         end
         if Processed then return end
+        if GMOD.has_id(entity.name, This_MOD.id) then return end
 
         --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
