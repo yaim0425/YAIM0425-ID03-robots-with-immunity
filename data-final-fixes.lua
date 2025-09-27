@@ -167,8 +167,8 @@ function This_MOD.get_elements()
 
         --- Validar si ya fue procesado
         local That_MOD =
-            GMOD.get_id_and_name(item.name) or
-            { ids = "-", name = item.name }
+            GMOD.get_id_and_name(entity.name) or
+            { ids = "-", name = entity.name }
 
         local Name =
             GMOD.name .. That_MOD.ids ..
@@ -202,10 +202,13 @@ function This_MOD.get_elements()
         Space.recipe = Space.recipe and Space.recipe[1] or nil
 
         Space.subgroup =
-            This_MOD.prefix .. (
+            GMOD.name ..
+            (
                 GMOD.get_id_and_name(Space.item.subgroup) or
-                { name = Space.item.subgroup }
-            ).name .. "-" .. Space.entity.type
+                { ids = "-" }
+            ).ids ..
+            This_MOD.id .. "-" ..
+            That_MOD.name
 
         Space.order = item.order
 
