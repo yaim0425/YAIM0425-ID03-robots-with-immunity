@@ -144,9 +144,6 @@ function This_MOD.get_elements()
         table.insert(This_MOD.damages, damage)
     end
 
-    --- Cantidad de digitod
-    This_MOD.digits = GMOD.digit_count(#This_MOD.damages) + 1
-
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 
 
@@ -274,7 +271,7 @@ function This_MOD.get_elements()
         --- Corregir los spaces
         for _, space in pairs(types) do
             --- Cantidad de dígitos necesarios
-            space.digit = Digit
+            space.digits = Digit
 
             --- Reemplazar los orders por números consecutivos
             for key, order in pairs(Orders) do
