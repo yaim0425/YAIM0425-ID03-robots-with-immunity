@@ -652,7 +652,7 @@ function This_MOD.create_recipe(space)
         Recipe.icons = GMOD.copy(space.item.icons)
         table.insert(Recipe.icons, This_MOD.indicator)
 
-        --- Agregar indicador del MOD
+        --- Receta desbloqueada por tecnología
         Recipe.enabled = space.tech == nil
 
         --- Subgrupo y Order
