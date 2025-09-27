@@ -201,6 +201,7 @@ function This_MOD.get_elements()
         Space.tech = GMOD.get_technology(Space.recipe)
         Space.recipe = Space.recipe and Space.recipe[1] or nil
 
+        Space.digits = 1 + GMOD.digit_count(#This_MOD.damages + 1)
         Space.subgroup =
             GMOD.name ..
             (
@@ -240,50 +241,6 @@ function This_MOD.get_elements()
 
     for item_name, entity in pairs(GMOD.entities) do
         validate_entity(GMOD.items[item_name], entity)
-    end
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-
-
-
-
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-    --- Establever el order
-    --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
-
-    --- Cantidad de dígitos para el order
-    local Expo = GMOD.digit_count(#This_MOD.damages + 1)
-
-    --- Recorrer los elementos a procesar
-    for _, types in pairs(This_MOD.to_be_processed) do
-        --- Contenedor de los orders
-        local Orders = {}
-
-        --- Obtener los orders
-        for _, space in pairs(types) do
-            table.insert(Orders, space.order)
-        end
-
-        --- Ordenar los orders
-        table.sort(Orders)
-
-        --- Cantidad de dígitos necesarios
-        local Digits = 1 + Expo + GMOD.digit_count(#Orders)
-
-        --- Corregir los spaces
-        for _, space in pairs(types) do
-            --- Cantidad de dígitos necesarios
-            space.digits = Digits
-
-            --- Reemplazar los orders por números consecutivos
-            for key, order in pairs(Orders) do
-                if space.order == order then
-                    space.order = key * (10 ^ Expo)
-                    break
-                end
-            end
-        end
     end
 
     --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -344,7 +301,7 @@ function This_MOD.create_item(space)
         local Order =
             GMOD.pad_left_zeros(
                 space.digits,
-                space.order + (i or #This_MOD.damages + 1)
+                i or #This_MOD.damages + 1
             ) .. "0"
 
         --- Renombrar
@@ -634,7 +591,7 @@ function This_MOD.create_recipe(space)
         local Order =
             GMOD.pad_left_zeros(
                 space.digits,
-                space.order + (i or #This_MOD.damages + 1)
+                i or #This_MOD.damages + 1
             ) .. "0"
 
         --- Renombrar
